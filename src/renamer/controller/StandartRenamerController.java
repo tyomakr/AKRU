@@ -13,6 +13,9 @@ import renamer.MainApp;
 import renamer.model.FileItem;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +42,8 @@ public class StandartRenamerController {
     @FXML private Button buttonCleanItemsList;
 
     @FXML private Button buttonMaskFileName;
+    @FXML private Button buttonDate;
+    @FXML private Button buttonTime;
 
     @FXML private TableView<FileItem> tableView;
     @FXML private TableColumn<FileItem, String> columnOldName;
@@ -174,11 +179,13 @@ public class StandartRenamerController {
 
             //Получаем полное имя файла
             String oldFileName = fileItem.getOldFileName();
+            //получаем для шаблонов файл
+            File file = fileItem.getFile();
 
             //Если файл не содержит точку в названии (файлы с именеи без расширения)
             if (!oldFileName.contains(".")) {
                 //подменияем символы, согласно шаблонов масок
-                String newFileName = replaceFileNameTemplates(oldFileName);
+                String newFileName = replaceFileNameTemplates(file, oldFileName);
                 //записываем новое имя файла в fileItem
                 fileItem.setNewFileName(newFileName);
             }
@@ -195,7 +202,7 @@ public class StandartRenamerController {
                 //отрезаем расширение файла
                 oldFileName = oldFileName.substring(0, oldFileName.lastIndexOf("."));
                 //подменияем символы, согласно шаблонов масок
-                String newFileName = replaceFileNameTemplates(oldFileName);
+                String newFileName = replaceFileNameTemplates(file, oldFileName);
                 //получаем расширение файла
                 int extPosition = fileItem.getOldFileName().lastIndexOf(".") + 1;
                 String extension = fileItem.getOldFileName().substring(extPosition);
@@ -208,11 +215,29 @@ public class StandartRenamerController {
     }
 
     //Шаблоны для замены по маске
-    private String replaceFileNameTemplates(String oldFileName) {
+    private String replaceFileNameTemplates(File file, String oldFileName) {
+
         //получаем маски с textField
         String maskFileName = textFieldFileNameMask.getText();
+
+
+        //аттрибуты файла
+        //дата
+        String fileDate = "";
+        //время
+        String fileTime = "";
+        try {
+            BasicFileAttributes attributes = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
+            fileDate = attributes.creationTime().toString().substring(0, 10);
+            fileTime = attributes.creationTime().toString().substring(11, 19).replaceAll(":", "-");
+
+        } catch (IOException e) {e.printStackTrace();}
+
         //Применяем шаблоны масок
-        String newFileName = maskFileName.replaceAll("\\[N\\]", oldFileName);
+        String newFileName;
+        newFileName = maskFileName.replaceAll("\\[N\\]", oldFileName);
+        newFileName = newFileName.replaceAll("\\[YMD\\]", fileDate);
+        newFileName = newFileName.replaceAll("\\[hms\\]", fileTime);
 
         return newFileName;
     }
@@ -220,6 +245,18 @@ public class StandartRenamerController {
     //маска имени файла
     public void applyMaskFileName() {
         textFieldFileNameMask.appendText("[N]");
+        applyMasks();
+    }
+
+    //маска имени файла по дате
+    public void applyMaskFileNameDate() {
+        textFieldFileNameMask.appendText("[YMD]");
+        applyMasks();
+    }
+
+    //маска имени файла по времени
+    public void applyMaskFileNameTime() {
+        textFieldFileNameMask.appendText("[hms]");
         applyMasks();
     }
 

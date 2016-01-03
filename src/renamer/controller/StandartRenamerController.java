@@ -1,5 +1,7 @@
 package renamer.controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -49,7 +51,14 @@ public class StandartRenamerController {
     public StandartRenamerController() {}
 
     //initialize
-    private void initialize() {}
+    public void initialize() {
+
+        //Отслеживание изменения поля, для автоматического применения маски имени файла
+        textFieldFileNameMask.textProperty().addListener((observable, oldValue, newValue) -> {
+            applyMasks();
+        });
+
+    }
 
 
     //возврат к главному меню
@@ -98,10 +107,29 @@ public class StandartRenamerController {
     //поднять файл в списке
     public void moveItemUp() {
 
+        int row = tableView.getSelectionModel().getSelectedIndex();
+        //проверяем, если элемент не первый в списке
+        if (row > 0) {
+            FileItem fileItem1 = fileItemsList.get(row);
+            FileItem fileItem2 = fileItemsList.get(row - 1);
+
+            fileItemsList.set(row - 1, fileItem1);
+            fileItemsList.set(row, fileItem2);
+        }
     }
 
     //опустить файл в списке
     public void moveItemDown() {
+
+        int row = tableView.getSelectionModel().getSelectedIndex();
+        //проверяем, если элемент не последний в списке
+        if (row != fileItemsList.size() - 1) {
+            FileItem fileItem1 = fileItemsList.get(row);
+            FileItem fileItem2 = fileItemsList.get(row + 1);
+
+            fileItemsList.set(row + 1, fileItem1);
+            fileItemsList.set(row, fileItem2);
+        }
 
     }
 

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="renamer.controller.StandartRenamerController">
+   <top>
+      <Pane prefHeight="40.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+          <Button fx:id="buttonBackToMenu" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#backToMenu" prefWidth="70.0" text="в Меню" textAlignment="CENTER" />
+            <Label layoutX="97.0" layoutY="9.0" text="Стандартное групповое переименование файлов">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+      </Pane>
+   </top>
+   <bottom>
+      <TextArea fx:id="consoleArea" editable="false" prefHeight="131.0" prefWidth="1090.0" wrapText="true">
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" />
+         </BorderPane.margin></TextArea>
+   </bottom>
+   <right>
+      <Pane prefHeight="501.0" prefWidth="70.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+            <Button fx:id="buttonAddFolderItems" layoutX="5.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addFolderItems" prefWidth="60.0" text="D +" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonCleanItemsList" layoutX="5.0" layoutY="229.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cleanItemList" prefWidth="60.0" text="Clean" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonAddItems" layoutX="5.0" layoutY="66.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addItems" prefWidth="60.0" text="F +" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonRemoveItem" layoutX="5.0" layoutY="102.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#removeItem" prefWidth="60.0" text="F -" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonItemUp" layoutX="6.0" layoutY="147.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveItemUp" prefWidth="60.0" text="UP" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonItemDown" layoutX="6.0" layoutY="179.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveItemDown" prefWidth="60.0" text="Down" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+      </Pane>
+   </right>
+   <center>
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="tableView" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="319.0" prefWidth="1020.0">
+               <columns>
+                  <TableColumn fx:id="columnOldName" editable="false" prefWidth="205.0" text="Старое имя" />
+                  <TableColumn fx:id="columnNewName" editable="false" prefWidth="236.0" text="Новое имя" />
+                  <TableColumn fx:id="columnFileSize" editable="false" prefWidth="94.0" text="Размер" />
+                  <TableColumn fx:id="columnFilePath" editable="false" prefWidth="455.0" text="Местоположение" />
+               </columns>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </TableView>
+            <Label layoutX="14.0" layoutY="327.0" text="Маска для имени файла" />
+            <TextField fx:id="textFieldFileNameMask" layoutX="14.0" layoutY="349.0" />
+            <Label layoutX="202.0" layoutY="327.0" text="...расширения" />
+            <TextField fx:id="textFieldFileExtMask" layoutX="202.0" layoutY="349.0" prefHeight="26.0" prefWidth="98.0" />
+            <Button fx:id="buttonMaskFileName" layoutX="14.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileName" prefHeight="26.0" prefWidth="71.0" text="[N] - имя" />
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </Pane>
+   </center>
+</BorderPane>

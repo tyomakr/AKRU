@@ -23,6 +23,7 @@ public class StandartRenamerController {
     //даем контроллеру доступ к экземпляру mainApp
     private MainApp mainApp;
 
+
     //создаем лист для обработки файлов
     private ObservableList<FileItem> fileItemsList = FXCollections.observableArrayList();
 
@@ -37,9 +38,9 @@ public class StandartRenamerController {
     @FXML private TableColumn<FileItem, String> columnFileSize;
     @FXML private TableColumn<FileItem, String> columnFilePath;
 
-    @FXML private Spinner spinnerStartTo;
-    @FXML private Spinner spinnerStep;
-    @FXML private Spinner spinnerDigits;
+    @FXML private Spinner<Integer> spinnerCounterStartTo;
+    @FXML private Spinner<Integer> spinnerCounterStep;
+    @FXML private Spinner<Integer> spinnerCounterDigits;
 
 
     //constructor
@@ -53,7 +54,13 @@ public class StandartRenamerController {
             applyMasks();
         });
 
-        
+        //Инициализация спиннеров
+        SpinnerValueFactory<Integer> svfStart = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE - 1000000); // :-)
+        spinnerCounterStartTo.setValueFactory(svfStart);
+        SpinnerValueFactory<Integer> svfStep = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1024);
+        spinnerCounterStep.setValueFactory(svfStep);
+        SpinnerValueFactory<Integer> svfDigits = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50);
+        spinnerCounterDigits.setValueFactory(svfDigits);
 
     }
 
@@ -88,7 +95,6 @@ public class StandartRenamerController {
         fileItemsList.addAll(files.stream().map(file -> new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath())).collect(Collectors.toList()));
         //заполняем таблицу
         fillTable();
-
     }
 
     //удаление файла из таблицы
@@ -98,7 +104,6 @@ public class StandartRenamerController {
         if (row >= 0) {
             fileItemsList.remove(row);
         }
-
     }
 
     //поднять файл в списке
@@ -240,10 +245,6 @@ public class StandartRenamerController {
         applyMasks();
     }
 
-    private void counterTest() {
-
-    }
-
     //маска имени файла
     public void applyMaskFileName() {
         textFieldFileNameMask.appendText("[N]");
@@ -267,7 +268,6 @@ public class StandartRenamerController {
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
-
 }
 
 

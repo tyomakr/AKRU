@@ -12,10 +12,10 @@ public class FileItem {
 
     private File file;
 
-    private StringProperty oldFileName;
+    private final StringProperty oldFileName;
     private StringProperty newFileName;
-    private LongProperty fileSize;
-    private StringProperty filePath;
+    private final LongProperty fileSize;
+    private final StringProperty filePath;
 
 
     //constructor

@@ -18,10 +18,6 @@ public class StartMenuController {
     public StartMenuController() {}
 
 
-    //объявляем поля из FXMbuttonStdRenamer
-    @FXML private Button buttonStdRenamer;
-
-
     //initialize
     private void initialize() {}
 

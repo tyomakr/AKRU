@@ -1,7 +1,5 @@
 package renamer.controller;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -33,23 +31,15 @@ public class StandartRenamerController {
     @FXML private TextField textFieldFileNameMask;
     @FXML private TextField textFieldFileExtMask;
 
-    @FXML private Button buttonBackToMenu;
-    @FXML private Button buttonAddFolderItems;
-    @FXML private Button buttonAddItems;
-    @FXML private Button buttonRemoveItem;
-    @FXML private Button buttonItemUp;
-    @FXML private Button buttonItemDown;
-    @FXML private Button buttonCleanItemsList;
-
-    @FXML private Button buttonMaskFileName;
-    @FXML private Button buttonDate;
-    @FXML private Button buttonTime;
-
     @FXML private TableView<FileItem> tableView;
     @FXML private TableColumn<FileItem, String> columnOldName;
     @FXML private TableColumn<FileItem, String> columnNewName;
     @FXML private TableColumn<FileItem, String> columnFileSize;
     @FXML private TableColumn<FileItem, String> columnFilePath;
+
+    @FXML private Spinner spinnerStartTo;
+    @FXML private Spinner spinnerStep;
+    @FXML private Spinner spinnerDigits;
 
 
     //constructor
@@ -62,6 +52,8 @@ public class StandartRenamerController {
         textFieldFileNameMask.textProperty().addListener((observable, oldValue, newValue) -> {
             applyMasks();
         });
+
+        
 
     }
 
@@ -240,6 +232,16 @@ public class StandartRenamerController {
         newFileName = newFileName.replaceAll("\\[hms\\]", fileTime);
 
         return newFileName;
+    }
+
+    //маска счетчика (в имени файла)
+    public void applyMaskFileNameCounter() {
+        textFieldFileNameMask.appendText("[C]");
+        applyMasks();
+    }
+
+    private void counterTest() {
+
     }
 
     //маска имени файла

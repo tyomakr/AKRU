@@ -53,6 +53,10 @@ public class StandartRenamerController implements RenamerController {
     //initialize
     public void initialize() {
 
+        //Первоначальное заполнение полей имени и расширения файла
+        textFieldFileNameMask.setText("[N]");
+        textFieldFileExtMask.setText("[T]");
+
         //Инициализация спиннеров
         SpinnerValueFactory<Integer> svfStart = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, Integer.MAX_VALUE - 1000000); // :-)
         spinnerCounterStartTo.setValueFactory(svfStart);

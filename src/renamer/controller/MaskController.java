@@ -16,9 +16,6 @@ public class MaskController {
         this.renamerController = renamerController;
     }
 
-    
-
-
 
     //чтение маски и превью
     public void applyMasks() {
@@ -33,7 +30,7 @@ public class MaskController {
 
             //Если файл не содержит точку в названии (файлы с именеи без расширения)
             if (!oldFileName.contains(".")) {
-                //подменияем символы, согласно шаблонов масок
+                //подменяем символы, согласно шаблонов масок
                 String newFileName = fileNameTemplates(file, oldFileName, index);
                 //записываем новое имя файла в fileItem
                 fileItem.setNewFileName(newFileName);
@@ -43,11 +40,13 @@ public class MaskController {
             else {
                 //отрезаем расширение файла
                 oldFileName = oldFileName.substring(0, oldFileName.lastIndexOf("."));
-                //подменияем символы, согласно шаблонов масок
+                //подменяем символы, согласно шаблонов масок
                 String newFileName = fileNameTemplates(file, oldFileName, index);
                 //получаем расширение файла
                 int extPosition = fileItem.getOldFileName().lastIndexOf(".") + 1;
                 String extension = fileItem.getOldFileName().substring(extPosition);
+                //подменяем символы расширения файла, согласно шаблону маски
+                extension = fileExtTemplates(extension, index);
                 //записываем новое имя файла в fileItem
                 fileItem.setNewFileName(newFileName + "." + extension);
             }
@@ -96,14 +95,32 @@ public class MaskController {
     }
 
     //Шаблоны для замены расширения файла по маске
-    private String fileExtTemplates(File file, String extension, int index) {
+    private String fileExtTemplates(String extension, int index) {
 
         //получаем маски с textField
         String maskExtension = renamerController.getTextFieldFileExtMask().getText();
-        //TODO
 
+        String newExtension;
+        //Тип файла по умолчанию
+        newExtension = maskExtension.replaceAll("\\[T\\]", extension);
 
-        return null;
+        //если присутствует счетчик
+        if (newExtension.contains("[C]")) {
+
+            int start = renamerController.getSpinnerCounterStartTo().getValue();
+            int step = renamerController.getSpinnerCounterStep().getValue();
+            int digits = renamerController.getSpinnerCounterDigits().getValue();
+
+            //вычисляем значение счетчика для конкретного файла
+            int calculatedCount = start + (step * index);
+
+            //работаем с дополнительными нулями в счетчике
+            String finalCount = String.format("%0" + digits + "d", calculatedCount);
+
+            newExtension = newExtension.replaceAll("\\[C\\]", finalCount);
+        }
+
+        return newExtension;
     }
 
 }

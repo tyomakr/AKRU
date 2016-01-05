@@ -2,6 +2,7 @@ package renamer.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -11,21 +12,22 @@ import renamer.MainApp;
 import renamer.model.FileItem;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class StandartRenamerController {
+public class StandartRenamerController implements RenamerController {
 
     //даем контроллеру доступ к экземпляру mainApp
     private MainApp mainApp;
 
+    //объявляем экземпляр maskController и в конструкторе передаем ему этот контроллер
+    MaskController maskController = new MaskController();
+
 
     //создаем лист для обработки файлов
     private ObservableList<FileItem> fileItemsList = FXCollections.observableArrayList();
+
 
     //объявляем поля из FXML
     @FXML private TextArea consoleArea;
@@ -44,14 +46,17 @@ public class StandartRenamerController {
 
 
     //constructor
-    public StandartRenamerController() {}
+    public StandartRenamerController() {
+
+        maskController.setRenamerController(this);
+    }
 
     //initialize
     public void initialize() {
 
         //Отслеживание изменения поля, для автоматического применения маски имени файла
         textFieldFileNameMask.textProperty().addListener((observable, oldValue, newValue) -> {
-            applyMasks();
+            maskController.applyMasks();
         });
 
         //Инициализация спиннеров
@@ -167,106 +172,59 @@ public class StandartRenamerController {
     }
 
     /** Маски */
-    //чтение маски и превью
-    private void applyMasks() {
-
-        consoleArea.setText("Применение маски: ");
-
-        for (FileItem fileItem : fileItemsList) {
-
-            //Получаем полное имя файла
-            String oldFileName = fileItem.getOldFileName();
-            //получаем для шаблонов файл
-            File file = fileItem.getFile();
-
-            //Если файл не содержит точку в названии (файлы с именеи без расширения)
-            if (!oldFileName.contains(".")) {
-                //подменияем символы, согласно шаблонов масок
-                String newFileName = replaceFileNameTemplates(file, oldFileName);
-                //записываем новое имя файла в fileItem
-                fileItem.setNewFileName(newFileName);
-            }
-
-            //Если полное имя файла начинается с точки (файлы только с расширением /nix системы)
-            else if (oldFileName.startsWith(".")) {
-                //ничего не делаем, записываем новое имя файла таким-же
-                fileItem.setNewFileName(oldFileName);
-            }
-
-            //В обычных случаях, когда имя и расширение присутствуют
-            else {
-
-                //отрезаем расширение файла
-                oldFileName = oldFileName.substring(0, oldFileName.lastIndexOf("."));
-                //подменияем символы, согласно шаблонов масок
-                String newFileName = replaceFileNameTemplates(file, oldFileName);
-                //получаем расширение файла
-                int extPosition = fileItem.getOldFileName().lastIndexOf(".") + 1;
-                String extension = fileItem.getOldFileName().substring(extPosition);
-                //записываем новое имя файла в fileItem
-                fileItem.setNewFileName(newFileName + "." + extension);
-            }
-
-            consoleArea.appendText("\nНовое имя файла = " + fileItem.getNewFileName());
-        }
-    }
-
-    //Шаблоны для замены по маске
-    private String replaceFileNameTemplates(File file, String oldFileName) {
-
-        //получаем маски с textField
-        String maskFileName = textFieldFileNameMask.getText();
-
-
-        //аттрибуты файла
-        //дата
-        String fileDate = "";
-        //время
-        String fileTime = "";
-        try {
-            BasicFileAttributes attributes = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
-            fileDate = attributes.creationTime().toString().substring(0, 10);
-            fileTime = attributes.creationTime().toString().substring(11, 19).replaceAll(":", "-");
-
-        } catch (IOException e) {e.printStackTrace();}
-
-        //Применяем шаблоны масок
-        String newFileName;
-        newFileName = maskFileName.replaceAll("\\[N\\]", oldFileName);
-        newFileName = newFileName.replaceAll("\\[YMD\\]", fileDate);
-        newFileName = newFileName.replaceAll("\\[hms\\]", fileTime);
-
-        return newFileName;
-    }
 
     //маска счетчика (в имени файла)
     public void applyMaskFileNameCounter() {
         textFieldFileNameMask.appendText("[C]");
-        applyMasks();
+        maskController.applyMasks();
     }
 
     //маска имени файла
     public void applyMaskFileName() {
         textFieldFileNameMask.appendText("[N]");
-        applyMasks();
+        maskController.applyMasks();
     }
 
     //маска имени файла по дате
     public void applyMaskFileNameDate() {
         textFieldFileNameMask.appendText("[YMD]");
-        applyMasks();
+        maskController.applyMasks();
     }
 
     //маска имени файла по времени
     public void applyMaskFileNameTime() {
         textFieldFileNameMask.appendText("[hms]");
-        applyMasks();
+        maskController.applyMasks();
     }
 
 
     //setters and getters
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+    }
+
+    public ObservableList<FileItem> getFileItemsList() {
+        return fileItemsList;
+    }
+
+    public TextField getTextFieldFileNameMask() {
+        return textFieldFileNameMask;
+    }
+
+    public TextField getTextFieldFileExtMask() {
+        return textFieldFileExtMask;
+    }
+
+    public Spinner<Integer> getSpinnerCounterStartTo() {
+        return spinnerCounterStartTo;
+    }
+
+    public Spinner<Integer> getSpinnerCounterStep() {
+        return spinnerCounterStep;
+    }
+
+    public Spinner<Integer> getSpinnerCounterDigits() {
+        return spinnerCounterDigits;
     }
 }
 

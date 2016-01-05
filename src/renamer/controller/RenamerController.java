@@ -15,4 +15,6 @@ public interface RenamerController {
     Spinner<Integer> getSpinnerCounterStartTo();
     Spinner<Integer> getSpinnerCounterStep();
     Spinner<Integer> getSpinnerCounterDigits();
+
+
 }

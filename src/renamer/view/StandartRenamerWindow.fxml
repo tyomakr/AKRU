@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -27,36 +28,41 @@
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>
-                  <Button layoutX="5.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addFolderItems" prefWidth="60.0" text="D +" textAlignment="CENTER">
+                  <Button layoutX="5.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addFolderSubFoldersItems" prefWidth="60.0" text="Dd+" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Button>
-                  <Button layoutX="5.0" layoutY="229.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cleanItemList" prefWidth="60.0" text="Clean" textAlignment="CENTER">
+                  <Button layoutX="6.0" layoutY="284.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cleanItemList" prefWidth="60.0" text="Clean" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Button>
-                  <Button layoutX="5.0" layoutY="66.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addItems" prefWidth="60.0" text="F +" textAlignment="CENTER">
+                  <Button layoutX="5.0" layoutY="114.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addItems" prefWidth="60.0" text="F +" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Button>
-                  <Button layoutX="5.0" layoutY="102.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#removeItem" prefWidth="60.0" text="F -" textAlignment="CENTER">
+                  <Button layoutX="5.0" layoutY="145.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#removeItem" prefWidth="60.0" text="F -" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Button>
-                  <Button layoutX="6.0" layoutY="147.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveItemUp" prefWidth="60.0" text="UP" textAlignment="CENTER">
+                  <Button layoutX="6.0" layoutY="197.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveItemUp" prefWidth="60.0" text="UP" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Button>
-                  <Button layoutX="6.0" layoutY="179.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveItemDown" prefWidth="60.0" text="Down" textAlignment="CENTER">
+                  <Button layoutX="6.0" layoutY="229.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveItemDown" prefWidth="60.0" text="Down" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Button>
+         <Button layoutX="5.0" layoutY="61.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addFolderItems" prefWidth="60.0" text="D +" textAlignment="CENTER">
+            <font>
+               <Font name="System Bold" size="14.0" />
+            </font>
+         </Button>
       </Pane>
    </right>
    <center>
@@ -82,13 +88,15 @@
             <Separator layoutX="195.0" layoutY="383.0" orientation="VERTICAL" prefHeight="120.0" />
             <Separator layoutX="326.0" layoutY="334.0" orientation="VERTICAL" prefHeight="170.0" />
             <Spinner fx:id="spinnerCounterStartTo" editable="true" layoutX="413.0" layoutY="349.0" prefHeight="26.0" prefWidth="90.0" />
-            <Spinner fx:id="spinnerCounterStep" layoutX="413.0" layoutY="384.0" prefHeight="26.0" prefWidth="90.0" />
-            <Spinner fx:id="spinnerCounterDigits" layoutX="413.0" layoutY="417.0" prefWidth="90.0" />
+            <Spinner fx:id="spinnerCounterStep" editable="true" layoutX="413.0" layoutY="384.0" prefHeight="26.0" prefWidth="90.0" />
+            <Spinner fx:id="spinnerCounterDigits" editable="true" layoutX="413.0" layoutY="417.0" prefWidth="90.0" />
             <Label layoutX="333.0" layoutY="354.0" text="Начинать с" />
             <Label layoutX="333.0" layoutY="389.0" text="Шаг" />
             <Label layoutX="333.0" layoutY="422.0" text="Цифр" />
             <Label layoutX="335.0" layoutY="327.0" text="Параметры счетчика" />
             <Button layoutX="96.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileNameCounter" text="[C] - счетчик" />
+         <Button layoutX="216.0" layoutY="417.0" mnemonicParsing="false" onAction="#applyMaskFileExtCounter" prefWidth="96.0" text="[C] - счетчик" />
+         <Button layoutX="216.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileExtType" prefWidth="96.0" text="[T] - тип" />
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>

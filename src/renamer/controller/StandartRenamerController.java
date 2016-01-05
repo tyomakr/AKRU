@@ -2,7 +2,6 @@ package renamer.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableSet;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -54,18 +53,35 @@ public class StandartRenamerController implements RenamerController {
     //initialize
     public void initialize() {
 
+        //Инициализация спиннеров
+        SpinnerValueFactory<Integer> svfStart = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, Integer.MAX_VALUE - 1000000); // :-)
+        spinnerCounterStartTo.setValueFactory(svfStart);
+        SpinnerValueFactory<Integer> svfStep = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1024);
+        spinnerCounterStep.setValueFactory(svfStep);
+        SpinnerValueFactory<Integer> svfDigits = new SpinnerValueFactory.IntegerSpinnerValueFactory(3, 50);
+        spinnerCounterDigits.setValueFactory(svfDigits);
+
         //Отслеживание изменения поля, для автоматического применения маски имени файла
+        textFieldFileExtMask.textProperty().addListener((observable, oldValue, newValue) -> {
+            maskController.applyMasks();
+        });
+
+        //Отслеживание изменения поля, для автоматического применения маски расширения файла
         textFieldFileNameMask.textProperty().addListener((observable, oldValue, newValue) -> {
             maskController.applyMasks();
         });
 
-        //Инициализация спиннеров
-        SpinnerValueFactory<Integer> svfStart = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE - 1000000); // :-)
-        spinnerCounterStartTo.setValueFactory(svfStart);
-        SpinnerValueFactory<Integer> svfStep = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1024);
-        spinnerCounterStep.setValueFactory(svfStep);
-        SpinnerValueFactory<Integer> svfDigits = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50);
-        spinnerCounterDigits.setValueFactory(svfDigits);
+        //Отслеживание изменения полей спиннеров
+        spinnerCounterStartTo.valueProperty().addListener((observable, oldValue, newValue) -> {
+            maskController.applyMasks();
+        });
+        spinnerCounterStep.valueProperty().addListener((observable, oldValue, newValue) ->  {
+            maskController.applyMasks();
+        });
+        spinnerCounterDigits.valueProperty().addListener((observable, oldValue, newValue) -> {
+            maskController.applyMasks();
+        });
+
 
     }
 
@@ -76,28 +92,61 @@ public class StandartRenamerController implements RenamerController {
         mainApp.showStartMenuWindow();
     }
 
-    //добавление содержимого папки в таблицу
-    public void addFolderItems() {
+    //добавление содержимого папки и подпапок в таблицу
+    public void addFolderSubFoldersItems() {
 
         DirectoryChooser dirChooser = new DirectoryChooser();
         dirChooser.getInitialDirectory();
         File dir = dirChooser.showDialog(mainApp.getPrimaryStage());
 
-        consoleArea.setText("Выбрана папка " + dir.getAbsolutePath());
-
-        //скан и добавление
-        createItemList(dir, fileItemsList);
+        //скан и добавление, включая подпапки
+        generateSubFoldersItemList(dir, fileItemsList);
 
         //заполняем таблицу
         fillTable();
+    }
 
+    //вспомогательный метод для добавления содержимого папки и подпапок
+    private void generateSubFoldersItemList(File dir, ObservableList<FileItem> fileItemsList) {
+
+        for (File file : dir.listFiles()) {
+            if (file.isDirectory()) {
+                generateSubFoldersItemList(file, fileItemsList);
+                continue;
+            }
+            if (file.isFile()) {
+                //если имя файла не начинается с точки, все ок
+                if (!file.getName().startsWith(".")) {
+                    fileItemsList.add(new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath()));
+                }
+            }
+        }
+    }
+
+    //запись содержимого папки в таблицу
+    public void addFolderItems() {
+        DirectoryChooser dirChooser = new DirectoryChooser();
+        dirChooser.getInitialDirectory();
+        File dir = dirChooser.showDialog(mainApp.getPrimaryStage());
+
+        for (File file : dir.listFiles()) {
+            //если имя файла не начинается с точки, все ок
+            if (!file.getName().startsWith(".")) {
+                fileItemsList.add(new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath()));
+            }
+        }
+
+        //заполняем таблицу
+        fillTable();
     }
 
     //добавление файла в таблицу
     public void addItems() {
         FileChooser fileChooser = new FileChooser();
         List<File> files = fileChooser.showOpenMultipleDialog(mainApp.getPrimaryStage());
-        fileItemsList.addAll(files.stream().map(file -> new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath())).collect(Collectors.toList()));
+
+        fileItemsList.addAll(files.stream().filter(file -> !file.getName().startsWith(".")).map(file -> new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath())).collect(Collectors.toList()));
+
         //заполняем таблицу
         fillTable();
     }
@@ -140,22 +189,8 @@ public class StandartRenamerController implements RenamerController {
 
     }
 
-    //запись списка файлов из выбранной папки в лист
-    private void createItemList(File dir, ObservableList<FileItem> fileItemsList) {
-
-        for (File file : dir.listFiles()) {
-            if (file.isDirectory()) {
-                createItemList(file, fileItemsList);
-                continue;
-            }
-            if (file.isFile()) {
-                fileItemsList.add(new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath()));
-            }
-        }
-    }
-
     //заполнение таблицы текущими данными из листа
-    private void fillTable() {
+    public void fillTable() {
 
         columnOldName.setCellValueFactory(new PropertyValueFactory<>("oldFileName"));
         columnNewName.setCellValueFactory(new PropertyValueFactory<>("newFileName"));
@@ -172,7 +207,6 @@ public class StandartRenamerController implements RenamerController {
     }
 
     /** Маски */
-
     //маска счетчика (в имени файла)
     public void applyMaskFileNameCounter() {
         textFieldFileNameMask.appendText("[C]");
@@ -197,8 +231,19 @@ public class StandartRenamerController implements RenamerController {
         maskController.applyMasks();
     }
 
+    //маска расширения файла
+    public void applyMaskFileExtType() {
+        textFieldFileExtMask.appendText("[T]");
+        maskController.applyMasks();
+    }
 
-    //setters and getters
+    //маска счетчика (расширение файла)
+    public void applyMaskFileExtCounter(){
+        textFieldFileExtMask.appendText("[C]");
+        maskController.applyMasks();
+    }
+
+    /** setters and getters */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
@@ -226,6 +271,8 @@ public class StandartRenamerController implements RenamerController {
     public Spinner<Integer> getSpinnerCounterDigits() {
         return spinnerCounterDigits;
     }
+
+
 }
 
 

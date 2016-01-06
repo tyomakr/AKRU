@@ -46,7 +46,6 @@ public class StandartRenamerController implements RenamerController {
 
     //constructor
     public StandartRenamerController() {
-
         maskController.setRenamerController(this);
     }
 
@@ -58,11 +57,11 @@ public class StandartRenamerController implements RenamerController {
         textFieldFileExtMask.setText("[T]");
 
         //Инициализация спиннеров
-        SpinnerValueFactory<Integer> svfStart = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, Integer.MAX_VALUE - 1000000); // :-)
+        SpinnerValueFactory<Integer> svfStart = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE - 1000000, 1); // :-)
         spinnerCounterStartTo.setValueFactory(svfStart);
         SpinnerValueFactory<Integer> svfStep = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1024);
         spinnerCounterStep.setValueFactory(svfStep);
-        SpinnerValueFactory<Integer> svfDigits = new SpinnerValueFactory.IntegerSpinnerValueFactory(3, 50);
+        SpinnerValueFactory<Integer> svfDigits = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50, 3);
         spinnerCounterDigits.setValueFactory(svfDigits);
 
         //Отслеживание изменения поля, для автоматического применения маски имени файла
@@ -135,11 +134,10 @@ public class StandartRenamerController implements RenamerController {
 
         for (File file : dir.listFiles()) {
             //если имя файла не начинается с точки, все ок
-            if (!file.getName().startsWith(".")) {
+            if (!file.getName().startsWith(".") && file.isFile()) {
                 fileItemsList.add(new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath()));
             }
         }
-
         //заполняем таблицу
         fillTable();
     }
@@ -149,7 +147,7 @@ public class StandartRenamerController implements RenamerController {
         FileChooser fileChooser = new FileChooser();
         List<File> files = fileChooser.showOpenMultipleDialog(mainApp.getPrimaryStage());
 
-        fileItemsList.addAll(files.stream().filter(file -> !file.getName().startsWith(".")).map(file -> new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath())).collect(Collectors.toList()));
+        fileItemsList.addAll(files.stream().filter(file -> !file.getName().startsWith(".") && file.isFile()).map(file -> new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath())).collect(Collectors.toList()));
 
         //заполняем таблицу
         fillTable();
@@ -210,6 +208,7 @@ public class StandartRenamerController implements RenamerController {
         consoleArea.appendText("\nСписок файлов очищен");
     }
 
+
     /** Маски */
     //маска счетчика (в имени файла)
     public void applyMaskFileNameCounter() {
@@ -247,6 +246,7 @@ public class StandartRenamerController implements RenamerController {
         maskController.applyMasks();
     }
 
+
     /** setters and getters */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
@@ -275,8 +275,4 @@ public class StandartRenamerController implements RenamerController {
     public Spinner<Integer> getSpinnerCounterDigits() {
         return spinnerCounterDigits;
     }
-
-
 }
-
-

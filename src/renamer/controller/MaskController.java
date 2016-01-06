@@ -1,8 +1,6 @@
 package renamer.controller;
 
-import javafx.collections.ObservableList;
 import renamer.model.FileItem;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -77,19 +75,9 @@ public class MaskController {
         newFileName = newFileName.replaceAll("\\[YMD\\]", fileDate);
         newFileName = newFileName.replaceAll("\\[hms\\]", fileTime);
 
+        //применяем по надобности счетчик
         if (newFileName.contains("[C]")) {
-
-            int start = renamerController.getSpinnerCounterStartTo().getValue();
-            int step = renamerController.getSpinnerCounterStep().getValue();
-            int digits = renamerController.getSpinnerCounterDigits().getValue();
-
-            //вычисляем значение счетчика для конкретного файла
-            int calculatedCount = start + (step * index);
-
-            //работаем с дополнительными нулями в счетчике
-            String finalCount = String.format("%0" + digits + "d", calculatedCount);
-
-            newFileName = newFileName.replaceAll("\\[C\\]", finalCount);
+            newFileName = applyCounter(newFileName, index);
         }
         return newFileName;
     }
@@ -104,23 +92,28 @@ public class MaskController {
         //Тип файла по умолчанию
         newExtension = maskExtension.replaceAll("\\[T\\]", extension);
 
-        //если присутствует счетчик
+        //применяем по надобности счетчик
         if (newExtension.contains("[C]")) {
-
-            int start = renamerController.getSpinnerCounterStartTo().getValue();
-            int step = renamerController.getSpinnerCounterStep().getValue();
-            int digits = renamerController.getSpinnerCounterDigits().getValue();
-
-            //вычисляем значение счетчика для конкретного файла
-            int calculatedCount = start + (step * index);
-
-            //работаем с дополнительными нулями в счетчике
-            String finalCount = String.format("%0" + digits + "d", calculatedCount);
-
-            newExtension = newExtension.replaceAll("\\[C\\]", finalCount);
+            newExtension = applyCounter(newExtension, index);
         }
-
         return newExtension;
     }
 
+    //Применить счетчик
+    private String applyCounter(String fileStr, int index) {
+
+        int start = renamerController.getSpinnerCounterStartTo().getValue();
+        int step = renamerController.getSpinnerCounterStep().getValue();
+        int digits = renamerController.getSpinnerCounterDigits().getValue();
+
+        //вычисляем значение счетчика для конкретного файла
+        int calculatedCount = start + (step * index);
+
+        //работаем с дополнительными нулями в счетчике
+        String finalCount = String.format("%0" + digits + "d", calculatedCount);
+
+        fileStr = fileStr.replaceAll("\\[C\\]", finalCount);
+
+        return fileStr;
+    }
 }

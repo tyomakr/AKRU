@@ -23,10 +23,16 @@ public class StandartRenamerController implements RenamerController {
     //объявляем экземпляр maskController и в конструкторе передаем ему этот контроллер
     MaskController maskController = new MaskController();
 
-
     //создаем лист для обработки файлов
     private ObservableList<FileItem> fileItemsList = FXCollections.observableArrayList();
 
+    //комбобокс
+    private ObservableList<String> comboBoxRegistryList = FXCollections.observableArrayList(
+            "Без изменений", "ВЕРХНИЙ РЕГИСТР", "нижний регистр");
+
+    //для метода добавления
+    boolean isAddFolderSubfolder = true;
+    boolean isAddOnlyFiles = true;
 
     //объявляем поля из FXML
     @FXML private TextArea consoleArea;
@@ -42,6 +48,8 @@ public class StandartRenamerController implements RenamerController {
     @FXML private Spinner<Integer> spinnerCounterStartTo;
     @FXML private Spinner<Integer> spinnerCounterStep;
     @FXML private Spinner<Integer> spinnerCounterDigits;
+
+    @FXML private ComboBox<String> comboBoxRegistryChanger;
 
 
     //constructor
@@ -64,6 +72,10 @@ public class StandartRenamerController implements RenamerController {
         SpinnerValueFactory<Integer> svfDigits = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50, 3);
         spinnerCounterDigits.setValueFactory(svfDigits);
 
+        //Заполнение комбобокса
+        comboBoxRegistryChanger.setItems(comboBoxRegistryList);
+        comboBoxRegistryChanger.setValue(comboBoxRegistryList.get(0));
+
         //Отслеживание изменения поля, для автоматического применения маски имени файла
         textFieldFileExtMask.textProperty().addListener((observable, oldValue, newValue) -> {
             maskController.applyMasks();
@@ -85,6 +97,8 @@ public class StandartRenamerController implements RenamerController {
             maskController.applyMasks();
         });
 
+        //TODO listener combobox
+
 
     }
 
@@ -95,18 +109,49 @@ public class StandartRenamerController implements RenamerController {
         mainApp.showStartMenuWindow();
     }
 
-    //добавление содержимого папки и подпапок в таблицу
-    public void addFolderSubFoldersItems() {
+    //общий метод для добавления файлов и папок
+    private void addFiles() {
 
-        DirectoryChooser dirChooser = new DirectoryChooser();
-        dirChooser.getInitialDirectory();
-        File dir = dirChooser.showDialog(mainApp.getPrimaryStage());
+        /** условие добавления папки и всех подпапок */
+        if (isAddFolderSubfolder && !isAddOnlyFiles) {
+            File dir = dirChooser();
 
-        //скан и добавление, включая подпапки
-        generateSubFoldersItemList(dir, fileItemsList);
+            //скан и добавление, включая подпапки
+            generateSubFoldersItemList(dir, fileItemsList);
+        }
 
+        /** условие добавления содержимого только текущей папки */
+        else if (!isAddFolderSubfolder && !isAddOnlyFiles) {
+            File dir = dirChooser();
+
+            for (File file : dir.listFiles()) {
+                //если имя файла не начинается с точки, все ок
+                if (!file.getName().startsWith(".") && file.isFile()) {
+                    fileItemsList.add(new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath()));
+                }
+            }
+        }
+
+        /** условие добавления только файлов */
+        else if (!isAddFolderSubfolder) {
+
+            FileChooser fileChooser = new FileChooser();
+            List<File> files = fileChooser.showOpenMultipleDialog(mainApp.getPrimaryStage());
+
+            fileItemsList.addAll(files.stream().filter(file -> !file.getName().startsWith(".") && file.isFile()).map(file -> new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath())).collect(Collectors.toList()));
+        }
         //заполняем таблицу
         fillTable();
+    }
+
+    //вспомогательный метод диалога выбора папки
+    private File dirChooser() {
+        DirectoryChooser dirChooser = new DirectoryChooser();
+        dirChooser.getInitialDirectory();
+        File dir;
+        dir = dirChooser.showDialog(mainApp.getPrimaryStage());
+
+        return dir;
     }
 
     //вспомогательный метод для добавления содержимого папки и подпапок
@@ -126,31 +171,25 @@ public class StandartRenamerController implements RenamerController {
         }
     }
 
-    //запись содержимого папки в таблицу
-    public void addFolderItems() {
-        DirectoryChooser dirChooser = new DirectoryChooser();
-        dirChooser.getInitialDirectory();
-        File dir = dirChooser.showDialog(mainApp.getPrimaryStage());
-
-        for (File file : dir.listFiles()) {
-            //если имя файла не начинается с точки, все ок
-            if (!file.getName().startsWith(".") && file.isFile()) {
-                fileItemsList.add(new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath()));
-            }
-        }
-        //заполняем таблицу
-        fillTable();
+    //добавление содержимого папки и подпапок в таблицу
+    public void addFolderSubFoldersItems() {
+        isAddFolderSubfolder = true;
+        isAddOnlyFiles = false;
+        addFiles();
     }
 
-    //добавление файла в таблицу
+    //запись содержимого папки в таблицу
+    public void addFolderItems() {
+        isAddFolderSubfolder = false;
+        isAddOnlyFiles = false;
+        addFiles();
+    }
+
+    //добавление только выбранных файлов в таблицу
     public void addItems() {
-        FileChooser fileChooser = new FileChooser();
-        List<File> files = fileChooser.showOpenMultipleDialog(mainApp.getPrimaryStage());
-
-        fileItemsList.addAll(files.stream().filter(file -> !file.getName().startsWith(".") && file.isFile()).map(file -> new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath())).collect(Collectors.toList()));
-
-        //заполняем таблицу
-        fillTable();
+        isAddFolderSubfolder = false;
+        isAddOnlyFiles = true;
+        addFiles();
     }
 
     //удаление файла из таблицы
@@ -244,6 +283,11 @@ public class StandartRenamerController implements RenamerController {
     public void applyMaskFileExtCounter(){
         textFieldFileExtMask.appendText("[C]");
         maskController.applyMasks();
+    }
+
+    //изменение регистра файлов
+    public void changeFilesRegistry() {
+        //TODO
     }
 
 

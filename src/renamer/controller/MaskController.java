@@ -116,4 +116,19 @@ public class MaskController {
 
         return fileStr;
     }
+
+    //Регистр
+    public void applyRegister(String value) {
+
+        for (int index = 0; index < renamerController.getFileItemsList().size(); index++) {
+            FileItem fileItem = renamerController.getFileItemsList().get(index);
+
+            if (value.equals(renamerController.getComboBoxRegisterList().get(1))) {
+                fileItem.setNewFileName(fileItem.getNewFileName().toUpperCase());
+            }
+            else if (value.equals(renamerController.getComboBoxRegisterList().get(2))) {
+                fileItem.setNewFileName(fileItem.getNewFileName().toLowerCase());
+            }
+        }
+    }
 }

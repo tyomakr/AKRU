@@ -10,9 +10,10 @@ import javafx.stage.FileChooser;
 import renamer.MainApp;
 import renamer.model.FileItem;
 
-import java.io.File;
+import java.io.*;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 
 public class StandartRenamerController implements RenamerController {
@@ -27,8 +28,8 @@ public class StandartRenamerController implements RenamerController {
     private ObservableList<FileItem> fileItemsList = FXCollections.observableArrayList();
 
     //комбобокс
-    private ObservableList<String> comboBoxRegistryList = FXCollections.observableArrayList(
-            "Без изменений", "ВЕРХНИЙ РЕГИСТР", "нижний регистр");
+    private ObservableList<String> comboBoxRegisterList = FXCollections.observableArrayList(
+            "Без изменений", "БОЛЬШИЕ БУКВЫ", "маленькие буквы");
 
     //для метода добавления
     boolean isAddFolderSubfolder = true;
@@ -49,7 +50,7 @@ public class StandartRenamerController implements RenamerController {
     @FXML private Spinner<Integer> spinnerCounterStep;
     @FXML private Spinner<Integer> spinnerCounterDigits;
 
-    @FXML private ComboBox<String> comboBoxRegistryChanger;
+    @FXML private ComboBox<String> comboBoxRegisterChanger;
 
 
     //constructor
@@ -73,8 +74,8 @@ public class StandartRenamerController implements RenamerController {
         spinnerCounterDigits.setValueFactory(svfDigits);
 
         //Заполнение комбобокса
-        comboBoxRegistryChanger.setItems(comboBoxRegistryList);
-        comboBoxRegistryChanger.setValue(comboBoxRegistryList.get(0));
+        comboBoxRegisterChanger.setItems(comboBoxRegisterList);
+        comboBoxRegisterChanger.setValue(comboBoxRegisterList.get(0));
 
         //Отслеживание изменения поля, для автоматического применения маски имени файла
         textFieldFileExtMask.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -97,9 +98,10 @@ public class StandartRenamerController implements RenamerController {
             maskController.applyMasks();
         });
 
-        //TODO listener combobox
-
-
+        //Отслеживание изменения значений комбобокса
+        comboBoxRegisterChanger.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            maskController.applyRegister(newValue);
+        }));
     }
 
 
@@ -252,42 +254,31 @@ public class StandartRenamerController implements RenamerController {
     //маска счетчика (в имени файла)
     public void applyMaskFileNameCounter() {
         textFieldFileNameMask.appendText("[C]");
-        maskController.applyMasks();
     }
 
     //маска имени файла
     public void applyMaskFileName() {
         textFieldFileNameMask.appendText("[N]");
-        maskController.applyMasks();
     }
 
     //маска имени файла по дате
     public void applyMaskFileNameDate() {
         textFieldFileNameMask.appendText("[YMD]");
-        maskController.applyMasks();
     }
 
     //маска имени файла по времени
     public void applyMaskFileNameTime() {
         textFieldFileNameMask.appendText("[hms]");
-        maskController.applyMasks();
     }
 
     //маска расширения файла
     public void applyMaskFileExtType() {
         textFieldFileExtMask.appendText("[T]");
-        maskController.applyMasks();
     }
 
     //маска счетчика (расширение файла)
     public void applyMaskFileExtCounter(){
         textFieldFileExtMask.appendText("[C]");
-        maskController.applyMasks();
-    }
-
-    //изменение регистра файлов
-    public void changeFilesRegistry() {
-        //TODO
     }
 
 
@@ -318,5 +309,9 @@ public class StandartRenamerController implements RenamerController {
 
     public Spinner<Integer> getSpinnerCounterDigits() {
         return spinnerCounterDigits;
+    }
+
+    public ObservableList<String> getComboBoxRegisterList() {
+        return comboBoxRegisterList;
     }
 }

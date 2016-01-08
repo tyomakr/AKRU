@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-
 public class StandartRenamerController implements RenamerController {
 
     //даем контроллеру доступ к экземпляру mainApp
@@ -109,6 +108,12 @@ public class StandartRenamerController implements RenamerController {
     public void backToMenu() {
         mainApp.getPrimaryStage().close();
         mainApp.showStartMenuWindow();
+    }
+
+    public void runFileRenamerProcess() {
+
+        FileRenamerProcess frp = new FileRenamerProcess(fileItemsList);
+        frp.run();
     }
 
     //общий метод для добавления файлов и папок
@@ -248,7 +253,6 @@ public class StandartRenamerController implements RenamerController {
         fileItemsList.clear();
         consoleArea.appendText("\nСписок файлов очищен");
     }
-
 
     /** Маски */
     //маска счетчика (в имени файла)

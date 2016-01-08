@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-        
+
+<?import java.lang.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -98,6 +99,7 @@
          <Button layoutX="216.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileExtType" prefWidth="96.0" text="[T] - тип" />
          <Label layoutX="552.0" layoutY="327.0" text="Изменение регистра" />
          <ComboBox fx:id="comboBoxRegisterChanger" layoutX="552.0" layoutY="349.0" prefHeight="26.0" prefWidth="200.0" />
+         <Button layoutX="811.0" layoutY="417.0" mnemonicParsing="false" onAction="#runFileRenamerProcess" text="ВЫПОЛНИТЬ" />
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>

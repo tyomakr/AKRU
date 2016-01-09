@@ -112,8 +112,12 @@ public class StandartRenamerController implements RenamerController {
 
     public void runFileRenamerProcess() {
 
-        FileRenamerProcess frp = new FileRenamerProcess(fileItemsList);
-        frp.run();
+        if (fileItemsList.size() != 0) {
+
+            FileRenamerProcess frp = new FileRenamerProcess(fileItemsList);
+            frp.rename();
+        }
+
     }
 
     //общий метод для добавления файлов и папок

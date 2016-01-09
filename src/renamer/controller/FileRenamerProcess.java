@@ -18,11 +18,26 @@ public class FileRenamerProcess {
     //главный метод
     public void rename() {
 
+        //определяем кол-во потоков (вирт.ядер)
+        int qtyThreads = Runtime.getRuntime().availableProcessors();
+
+        //делитель потоков
+        int elementsOnThread = fileItemsList.size() / qtyThreads;
+
+
+
     }
+
+    //161304
 
 
     //треды
-    //161304
+    class renThread extends Thread {
 
+        @Override
+        public void run() {
+            //TODO
+        }
+    }
 
 }

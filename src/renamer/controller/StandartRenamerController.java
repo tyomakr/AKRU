@@ -7,7 +7,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import logger.ConsoleAreaAppender;
+import org.apache.log4j.Logger;
 import renamer.MainApp;
+import renamer.controller.process.FileRenamerProcess;
 import renamer.model.FileItem;
 
 import java.io.*;
@@ -16,6 +19,9 @@ import java.util.stream.Collectors;
 
 
 public class StandartRenamerController implements RenamerController {
+
+    //создание логгера
+    public static final Logger LOGGER = Logger.getLogger(StandartRenamerController.class);
 
     //даем контроллеру доступ к экземпляру mainApp
     private MainApp mainApp;
@@ -60,6 +66,12 @@ public class StandartRenamerController implements RenamerController {
     //initialize
     public void initialize() {
 
+        //Инициализация логгера
+        ConsoleAreaAppender consoleAreaAppender = new ConsoleAreaAppender();
+        ConsoleAreaAppender.setTextArea(consoleArea);
+        LOGGER.addAppender(consoleAreaAppender);
+
+
         //Первоначальное заполнение полей имени и расширения файла
         textFieldFileNameMask.setText("[N]");
         textFieldFileExtMask.setText("[T]");
@@ -101,6 +113,8 @@ public class StandartRenamerController implements RenamerController {
         comboBoxRegisterChanger.valueProperty().addListener(((observable, oldValue, newValue) -> {
             maskController.applyRegister(newValue);
         }));
+
+        LOGGER.info("Готов к работе");
     }
 
 
@@ -110,12 +124,19 @@ public class StandartRenamerController implements RenamerController {
         mainApp.showStartMenuWindow();
     }
 
+    //кнопка выполнить
     public void runFileRenamerProcess() {
 
         if (fileItemsList.size() != 0) {
 
-            FileRenamerProcess frp = new FileRenamerProcess(fileItemsList);
+            LOGGER.info("Переименование " + fileItemsList.size() + " файлов");
+
+            FileRenamerProcess frp = new FileRenamerProcess(fileItemsList, LOGGER);
             frp.rename();
+
+            LOGGER.info("* ВЫПОЛНЕНО *");
+            cleanItemList();
+
         }
 
     }
@@ -153,6 +174,8 @@ public class StandartRenamerController implements RenamerController {
         }
         //заполняем таблицу
         fillTable();
+
+        LOGGER.info("В списке " + fileItemsList.size() + " файлов");
     }
 
     //вспомогательный метод диалога выбора папки
@@ -210,6 +233,7 @@ public class StandartRenamerController implements RenamerController {
         if (row >= 0) {
             fileItemsList.remove(row);
         }
+        LOGGER.info("В списке " + fileItemsList.size() + " файлов");
     }
 
     //поднять файл в списке
@@ -255,7 +279,7 @@ public class StandartRenamerController implements RenamerController {
     //очистка списка файлов
     public void cleanItemList() {
         fileItemsList.clear();
-        consoleArea.appendText("\nСписок файлов очищен");
+        LOGGER.info("Список файлов очищен");
     }
 
     /** Маски */

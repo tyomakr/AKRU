@@ -1,8 +1,5 @@
 package renamer.controller;
 
-
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import renamer.MainApp;
 
 public class StartMenuController {

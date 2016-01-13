@@ -1,0 +1,14 @@
+.root {
+    -fx-background-image: url("./images/startMenuBg.jpg");
+}
+
+.paneTitle {
+    -fx-background-color: #000033;
+}
+
+.labelTitle {
+    -fx-font-family: Tahoma;
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+}
+

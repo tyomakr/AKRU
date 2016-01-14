@@ -10,20 +10,16 @@ public class StartMenuController {
         this.mainApp = mainApp;
     }
 
-
-    //constructor
-    public StartMenuController() {}
-
-
-    //initialize
-    private void initialize() {}
-
-
     //Вызов окна stdRenamer
     public void runStandartRenamer() {
-
         mainApp.getPrimaryStage().close();
         mainApp.showStandartRenamer();
+    }
+
+    //Вызов окна ExifRenamer
+    public void runExifRenamer() {
+        mainApp.getPrimaryStage().close();
+        mainApp.showExifRenamer();
     }
 
 

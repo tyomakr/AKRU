@@ -120,8 +120,7 @@ public class StandartRenamerController implements RenamerController {
 
     //возврат к главному меню
     public void backToMenu() {
-        mainApp.getPrimaryStage().close();
-        mainApp.showStartMenuWindow();
+        mainApp.backToMenu();
     }
 
     //кнопка выполнить

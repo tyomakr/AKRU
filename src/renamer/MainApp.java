@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import renamer.controller.ExifRenamerController;
 import renamer.controller.StandartRenamerController;
 import renamer.controller.StartMenuController;
 
@@ -63,6 +64,35 @@ public class MainApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    //показ окна переименования по Exif
+    public void showExifRenamer() {
+
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("/renamer/view/ExifRenamerWindow.fxml"));
+            BorderPane exifRenamerWindow = loader.load();
+
+            Scene scene = new Scene(exifRenamerWindow);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+            ExifRenamerController controller = loader.getController();
+            controller.setMainApp(this);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    //возврат к главному меню
+    public void backToMenu() {
+        getPrimaryStage().close();
+        showStartMenuWindow();
     }
 
 

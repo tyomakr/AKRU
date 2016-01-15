@@ -102,8 +102,6 @@ public class MainApp extends Application {
         FileItemsStorage.getInstance().getFileItemsList().clear();
         FieldsValuesStorage.getInstance().fieldsSetNull();
 
-
-
         showStartMenuWindow();
     }
 

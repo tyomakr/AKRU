@@ -1,5 +1,5 @@
 .root {
-    -fx-background-image: url("./images/startMenuBg.jpg");
+    -fx-background-image: url("../images/startMenuBg.jpg");
 }
 
 .paneTitle {
@@ -35,11 +35,11 @@
 }
 
 .button1:hover {
-    -fx-background-image: url("./images/SM_button1hover.png");
+    -fx-background-image: url("../images/SM_button1hover.png");
 }
 .button2:hover {
-    -fx-background-image: url("./images/SM_button2hover.png");
+    -fx-background-image: url("../images/SM_button2hover.png");
 }
 .button3:hover {
-    -fx-background-image: url("./images/SM_button3hover.png");
+    -fx-background-image: url("../images/SM_button3hover.png");
 }

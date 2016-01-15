@@ -20,6 +20,12 @@ public class FieldsValuesStorage {
     private ObservableList<String> comboBoxRegisterList = FXCollections.observableArrayList("Без изменений", "БОЛЬШИЕ БУКВЫ", "маленькие буквы");
 
 
+    public void setDefaultValuesFields() {
+        textFieldFileNameMask.setText("[N]");
+        textFieldFileExtMask.setText("[T]");
+    }
+
+    //очистка полей
     public void fieldsSetNull() {
         textFieldFileNameMask = null;
         textFieldFileExtMask = null;

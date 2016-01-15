@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" stylesheets="@startMenu.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="renamer.controller.StartMenuController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" stylesheets="@css/startMenu.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="renamer.controller.StartMenuController">
    <top>
       <Pane prefHeight="40.0" prefWidth="200.0" styleClass="paneTitle" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -15,6 +14,7 @@
             <Label layoutX="14.0" layoutY="8.0" styleClass="labelTitle" text="AKRU - AK Rename Utility" />
       </Pane>
    </top>
+
    <center>
       <Pane BorderPane.alignment="CENTER">
          <opaqueInsets>

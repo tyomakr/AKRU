@@ -28,13 +28,12 @@ public class StandartRenamerController {
 
     //создаем лист для обработки файлов
     private ObservableList<FileItem> fileItemsList = FileItemsStorage.getInstance().getFileItemsList();
-
     //комбобокс
     private ObservableList<String> comboBoxRegisterList = FieldsValuesStorage.getInstance().getComboBoxRegisterList();
-
     //для метода добавления
     boolean isAddFolderSubfolder = true;
     boolean isAddOnlyFiles = true;
+
 
     //объявляем поля из FXML
     @FXML private TextArea consoleArea;
@@ -64,7 +63,8 @@ public class StandartRenamerController {
 
 
         //Первоначальное заполнение полей имени и расширения файла
-        setDefaultValuesFields();
+        textFieldFileNameMask.setText("[N]");
+        textFieldFileExtMask.setText("[T]");
         FieldsValuesStorage.getInstance().setTextFieldFileNameMask(textFieldFileNameMask);
         FieldsValuesStorage.getInstance().setTextFieldFileExtMask(textFieldFileExtMask);
 
@@ -228,15 +228,10 @@ public class StandartRenamerController {
     //очистка списка файлов
     public void cleanItemList() {
         fileItemsList.clear();
-        setDefaultValuesFields();
+        FieldsValuesStorage.getInstance().setDefaultValuesFields();
         LOGGER.info("Список файлов очищен");
     }
 
-    private void setDefaultValuesFields() {
-
-        textFieldFileNameMask.setText("[N]");
-        textFieldFileExtMask.setText("[T]");
-    }
 
     /** Маски */
     //маска счетчика (в имени файла)

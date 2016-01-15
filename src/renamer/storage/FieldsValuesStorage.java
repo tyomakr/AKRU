@@ -2,8 +2,7 @@ package renamer.storage;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 public class FieldsValuesStorage {
 
@@ -19,7 +18,7 @@ public class FieldsValuesStorage {
 
     private ObservableList<String> comboBoxRegisterList = FXCollections.observableArrayList("Без изменений", "БОЛЬШИЕ БУКВЫ", "маленькие буквы");
 
-
+    //установка значений полей по умолчанию
     public void setDefaultValuesFields() {
         textFieldFileNameMask.setText("[N]");
         textFieldFileExtMask.setText("[T]");

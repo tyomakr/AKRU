@@ -27,18 +27,10 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="61.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#runStandartRenamer" prefHeight="100.0" prefWidth="100.0" styleClass="button1" text="Standart Renamer" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" wrapText="true" />
-         <Label alignment="TOP_LEFT" layoutX="149.0" layoutY="61.0" opacity="0.93" prefHeight="99.0" prefWidth="265.0" text="Обычное групповое переименование файлов со стандартными масками" wrapText="true">
-            <font>
-               <Font size="14.0" />
-            </font>
-         </Label>
+         <Label styleClass="labelDesc" alignment="TOP_LEFT" layoutX="149.0" layoutY="61.0" opacity="0.93" prefHeight="99.0" prefWidth="265.0" text="Обычное групповое переименование файлов со стандартными масками" wrapText="true" />
          <Button alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="177.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#runExifRenamer" prefHeight="100.0" prefWidth="100.0" styleClass="button2" text="EXIF Renamer" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" wrapText="true" />
          <Button alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="293.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" styleClass="button3" text="Drag &amp; Drop Line Renamer" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" wrapText="true" />
-         <Label alignment="TOP_LEFT" layoutX="149.0" layoutY="178.0" opacity="0.93" prefHeight="99.0" prefWidth="265.0" text="Групповое переименование изображений, с возможностью включения в имя файла данных из EXIF" wrapText="true">
-            <font>
-               <Font size="14.0" />
-            </font>
-         </Label>
+         <Label styleClass="labelDesc" alignment="TOP_LEFT" layoutX="149.0" layoutY="178.0" opacity="0.93" prefHeight="99.0" prefWidth="265.0" text="Групповое переименование изображений, с возможностью включения в имя файла данных из EXIF" wrapText="true" />
       </Pane>
    </center>
 </BorderPane>

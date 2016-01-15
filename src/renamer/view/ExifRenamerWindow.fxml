@@ -32,9 +32,9 @@
             <TextField fx:id="textFieldFileNameMask" layoutX="14.0" layoutY="349.0" prefHeight="26.0" prefWidth="178.0" />
             <Label layoutX="215.0" layoutY="327.0" text="...расширения" />
             <TextField fx:id="textFieldFileExtMask" layoutX="215.0" layoutY="349.0" prefHeight="26.0" prefWidth="98.0" />
-            <Button layoutX="14.0" layoutY="384.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="[N] - имя" textAlignment="CENTER" />
-            <Button layoutX="14.0" layoutY="432.0" mnemonicParsing="false" prefWidth="95.0" text="Дата (YMD)" />
-            <Button layoutX="14.0" layoutY="465.0" mnemonicParsing="false" prefWidth="95.0" text="Время (hms)" />
+            <Button layoutX="14.0" layoutY="384.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="[N] - имя" onAction="#applyMaskFileName" textAlignment="CENTER" />
+            <Button layoutX="14.0" layoutY="432.0" mnemonicParsing="false" prefWidth="95.0" text="Дата (YMD)" onAction="#applyMaskFileNameDate" />
+            <Button layoutX="14.0" layoutY="465.0" mnemonicParsing="false" prefWidth="95.0" text="Время (hms)" onAction="#applyMaskFileNameTime" />
             <Separator layoutX="195.0" layoutY="383.0" orientation="VERTICAL" prefHeight="120.0" />
             <Separator layoutX="326.0" layoutY="334.0" orientation="VERTICAL" prefHeight="170.0" />
             <Spinner fx:id="spinnerCounterStartTo" editable="true" layoutX="413.0" layoutY="349.0" prefHeight="26.0" prefWidth="90.0" />
@@ -44,12 +44,12 @@
             <Label layoutX="333.0" layoutY="389.0" text="Шаг" />
             <Label layoutX="333.0" layoutY="422.0" text="Цифр" />
             <Label layoutX="335.0" layoutY="327.0" text="Параметры счетчика" />
-            <Button layoutX="96.0" layoutY="384.0" mnemonicParsing="false" text="[C] - счетчик" textAlignment="CENTER" />
-            <Button layoutX="216.0" layoutY="417.0" mnemonicParsing="false" prefWidth="96.0" text="[C] - счетчик" />
-            <Button layoutX="216.0" layoutY="384.0" mnemonicParsing="false" prefWidth="96.0" text="[T] - тип" />
+            <Button layoutX="96.0" layoutY="384.0" mnemonicParsing="false" text="[C] - счетчик"  onAction="#applyMaskFileNameCounter" textAlignment="CENTER" />
+            <Button layoutX="216.0" layoutY="417.0" mnemonicParsing="false" prefWidth="96.0" text="[C] - счетчик"  onAction="#applyMaskFileExtCounter" />
+            <Button layoutX="216.0" layoutY="384.0" mnemonicParsing="false" prefWidth="96.0" text="[T] - тип" onAction="#applyMaskFileExtType" />
             <Label layoutX="552.0" layoutY="327.0" text="Изменение регистра" />
             <ComboBox fx:id="comboBoxRegisterChanger" layoutX="552.0" layoutY="349.0" prefHeight="26.0" prefWidth="200.0" />
-            <Button alignment="CENTER" layoutX="552.0" layoutY="406.0" mnemonicParsing="false" prefHeight="95.0" prefWidth="95.0" text="ВЫПОЛНИТЬ" textAlignment="CENTER" />
+            <Button alignment="CENTER" layoutX="552.0" layoutY="406.0" mnemonicParsing="false" prefHeight="95.0" prefWidth="95.0" text="ВЫПОЛНИТЬ" onAction="#runFileRenamerProcess" textAlignment="CENTER" />
             <BorderPane.margin>
                 <Insets bottom="5.0" left="5.0" top="5.0" />
             </BorderPane.margin>
@@ -70,37 +70,37 @@
             <BorderPane.margin>
                 <Insets bottom="5.0" top="5.0" />
             </BorderPane.margin>
-            <Button layoutX="3.0" layoutY="33.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="Dd+" textAlignment="CENTER">
+            <Button layoutX="3.0" layoutY="33.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="Dd+" onAction="#addFolderSubFoldersItems" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>
             </Button>
-            <Button layoutX="4.0" layoutY="287.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="Clean" textAlignment="CENTER">
+            <Button layoutX="4.0" layoutY="287.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="Clean" onAction="#cleanItemList" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>
             </Button>
-            <Button layoutX="3.0" layoutY="117.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="F +" textAlignment="CENTER">
+            <Button layoutX="3.0" layoutY="117.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="F +" onAction="#addItems" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>
             </Button>
-            <Button layoutX="3.0" layoutY="148.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="F -" textAlignment="CENTER">
+            <Button layoutX="3.0" layoutY="148.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="F -" onAction="#removeItem" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>
             </Button>
-            <Button layoutX="4.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="UP" textAlignment="CENTER">
+            <Button layoutX="4.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="UP" onAction="#moveItemUp" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>
             </Button>
-            <Button layoutX="4.0" layoutY="232.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="Down" textAlignment="CENTER">
+            <Button layoutX="4.0" layoutY="232.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="Down" onAction="#moveItemDown" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>
             </Button>
-            <Button layoutX="3.0" layoutY="64.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="D +" textAlignment="CENTER">
+            <Button layoutX="3.0" layoutY="64.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="D +" onAction="#addFolderItems" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>

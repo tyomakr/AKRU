@@ -3,19 +3,20 @@ package renamer.controller.process;
 import javafx.collections.ObservableList;
 import org.apache.log4j.Logger;
 import renamer.model.FileItem;
+import renamer.storage.FileItemsStorage;
+
 import java.util.ArrayList;
 
 public class FileRenamerProcess {
 
-    //список файлов
-    private ObservableList<FileItem> fileItemsList;
+    //получаем список файлов
+    private ObservableList<FileItem> fileItemsList = FileItemsStorage.getInstance().getFileItemsList();
 
     private Logger LOGGER;
     private int brokenFilesCounter = 0;
 
     //constructor
-    public FileRenamerProcess(ObservableList<FileItem> fileItemsList, Logger LOGGER) {
-        this.fileItemsList = fileItemsList;
+    public FileRenamerProcess(Logger LOGGER) {
         this.LOGGER = LOGGER;
     }
 
@@ -76,21 +77,21 @@ public class FileRenamerProcess {
             thread.setEndThreadElementIndex(lastElement);
         }
 
+        LOGGER.info("* СТАРТ ВЫПОЛНЕНИЯ *");
+
         //Запуск всех тредов
         for (RenThread threads : threadsList) {
-
             try {
-                LOGGER.info("* СТАРТ ВЫПОЛНЕНИЯ *");
-
                 threads.start();
                 threads.join();
 
                 brokenFilesCounter = brokenFilesCounter + threads.getBrokenFilesCounter();
-                LOGGER.info("Процесс завершен. Проблемных файлов - " + brokenFilesCounter);
 
             } catch (InterruptedException e) {
                 LOGGER.error(e.fillInStackTrace());
             }
         }
+
+        LOGGER.info("Процесс завершен. Проблемных файлов - " + brokenFilesCounter);
     }
 }

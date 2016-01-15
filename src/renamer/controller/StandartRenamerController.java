@@ -10,8 +10,10 @@ import javafx.stage.FileChooser;
 import logger.ConsoleAreaAppender;
 import org.apache.log4j.Logger;
 import renamer.MainApp;
+import renamer.controller.preparing.MaskController;
 import renamer.controller.process.FileRenamerProcess;
 import renamer.model.FileItem;
+import renamer.storage.FileItemsStorage;
 
 import java.io.*;
 import java.util.List;
@@ -30,7 +32,7 @@ public class StandartRenamerController implements RenamerController {
     MaskController maskController = new MaskController();
 
     //создаем лист для обработки файлов
-    private ObservableList<FileItem> fileItemsList = FXCollections.observableArrayList();
+    private ObservableList<FileItem> fileItemsList = FileItemsStorage.getInstance().getFileItemsList();
 
     //комбобокс
     private ObservableList<String> comboBoxRegisterList = FXCollections.observableArrayList(
@@ -121,6 +123,7 @@ public class StandartRenamerController implements RenamerController {
     //возврат к главному меню
     public void backToMenu() {
         mainApp.backToMenu();
+
     }
 
     //кнопка выполнить
@@ -130,7 +133,7 @@ public class StandartRenamerController implements RenamerController {
 
             LOGGER.info("Переименование " + fileItemsList.size() + " файлов");
 
-            FileRenamerProcess frp = new FileRenamerProcess(fileItemsList, LOGGER);
+            FileRenamerProcess frp = new FileRenamerProcess(LOGGER);
             frp.rename();
 
             LOGGER.info("* ВЫПОЛНЕНО *");
@@ -171,6 +174,7 @@ public class StandartRenamerController implements RenamerController {
 
             fileItemsList.addAll(files.stream().filter(file -> !file.getName().startsWith(".") && file.isFile()).map(file -> new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath())).collect(Collectors.toList()));
         }
+
         //заполняем таблицу
         fillTable();
 
@@ -316,10 +320,6 @@ public class StandartRenamerController implements RenamerController {
     /** setters and getters */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
-    }
-
-    public ObservableList<FileItem> getFileItemsList() {
-        return fileItemsList;
     }
 
     public TextField getTextFieldFileNameMask() {

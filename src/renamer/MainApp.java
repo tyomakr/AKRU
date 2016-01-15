@@ -88,7 +88,6 @@ public class MainApp extends Application {
 
     }
 
-
     //возврат к главному меню
     public void backToMenu() {
         getPrimaryStage().close();

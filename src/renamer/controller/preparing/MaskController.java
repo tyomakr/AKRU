@@ -1,12 +1,19 @@
-package renamer.controller;
+package renamer.controller.preparing;
 
+import javafx.collections.ObservableList;
+import renamer.controller.RenamerController;
 import renamer.model.FileItem;
+import renamer.storage.FileItemsStorage;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
 
 public class MaskController {
+
+    //доступ к списку файлов
+    private ObservableList<FileItem> fileItemsList = FileItemsStorage.getInstance().getFileItemsList();
 
     //доступ к данным из вызывавшего этот контроллер
     private RenamerController renamerController;
@@ -18,8 +25,8 @@ public class MaskController {
     //чтение маски и превью
     public void applyMasks() {
 
-        for (int index = 0; index < renamerController.getFileItemsList().size(); index++) {
-            FileItem fileItem = renamerController.getFileItemsList().get(index);
+        for (int index = 0; index < fileItemsList.size(); index++) {
+            FileItem fileItem = fileItemsList.get(index);
 
             //Получаем полное имя файла
             String oldFileName = fileItem.getOldFileName();
@@ -120,8 +127,8 @@ public class MaskController {
     //Регистр
     public void applyRegister(String value) {
 
-        for (int index = 0; index < renamerController.getFileItemsList().size(); index++) {
-            FileItem fileItem = renamerController.getFileItemsList().get(index);
+        for (int index = 0; index < fileItemsList.size(); index++) {
+            FileItem fileItem = fileItemsList.get(index);
 
             if (value.equals(renamerController.getComboBoxRegisterList().get(1))) {
                 fileItem.setNewFileName(fileItem.getNewFileName().toUpperCase());

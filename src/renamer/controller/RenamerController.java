@@ -8,8 +8,6 @@ import renamer.model.FileItem;
 
 public interface RenamerController {
 
-    ObservableList<FileItem> getFileItemsList();
-
     TextField getTextFieldFileNameMask();
     TextField getTextFieldFileExtMask();
 

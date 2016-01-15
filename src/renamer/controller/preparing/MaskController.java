@@ -1,8 +1,8 @@
 package renamer.controller.preparing;
 
 import javafx.collections.ObservableList;
-import renamer.controller.RenamerController;
 import renamer.model.FileItem;
+import renamer.storage.FieldsValuesStorage;
 import renamer.storage.FileItemsStorage;
 
 import java.io.File;
@@ -14,13 +14,6 @@ public class MaskController {
 
     //доступ к списку файлов
     private ObservableList<FileItem> fileItemsList = FileItemsStorage.getInstance().getFileItemsList();
-
-    //доступ к данным из вызывавшего этот контроллер
-    private RenamerController renamerController;
-    public void setRenamerController(RenamerController renamerController) {
-        this.renamerController = renamerController;
-    }
-
 
     //чтение маски и превью
     public void applyMasks() {
@@ -62,7 +55,7 @@ public class MaskController {
     private String fileNameTemplates(File file, String oldFileName, int index) {
 
         //получаем маски с textField
-        String maskFileName = renamerController.getTextFieldFileNameMask().getText();
+        String maskFileName = FieldsValuesStorage.getInstance().getTextFieldFileNameMask().getText();
 
         //аттрибуты файла
         //дата
@@ -93,7 +86,7 @@ public class MaskController {
     private String fileExtTemplates(String extension, int index) {
 
         //получаем маски с textField
-        String maskExtension = renamerController.getTextFieldFileExtMask().getText();
+        String maskExtension = FieldsValuesStorage.getInstance().getTextFieldFileExtMask().getText();
 
         String newExtension;
         //Тип файла по умолчанию
@@ -109,9 +102,9 @@ public class MaskController {
     //Применить счетчик
     private String applyCounter(String fileStr, int index) {
 
-        int start = renamerController.getSpinnerCounterStartTo().getValue();
-        int step = renamerController.getSpinnerCounterStep().getValue();
-        int digits = renamerController.getSpinnerCounterDigits().getValue();
+        int start = FieldsValuesStorage.getInstance().getSpinnerCounterStartTo().getValue();
+        int step = FieldsValuesStorage.getInstance().getSpinnerCounterStep().getValue();
+        int digits = FieldsValuesStorage.getInstance().getSpinnerCounterDigits().getValue();
 
         //вычисляем значение счетчика для конкретного файла
         int calculatedCount = start + (step * index);
@@ -130,10 +123,10 @@ public class MaskController {
         for (int index = 0; index < fileItemsList.size(); index++) {
             FileItem fileItem = fileItemsList.get(index);
 
-            if (value.equals(renamerController.getComboBoxRegisterList().get(1))) {
+            if (value.equals(FieldsValuesStorage.getInstance().getComboBoxRegisterList().get(1))) {
                 fileItem.setNewFileName(fileItem.getNewFileName().toUpperCase());
             }
-            else if (value.equals(renamerController.getComboBoxRegisterList().get(2))) {
+            else if (value.equals(FieldsValuesStorage.getInstance().getComboBoxRegisterList().get(2))) {
                 fileItem.setNewFileName(fileItem.getNewFileName().toLowerCase());
             }
         }

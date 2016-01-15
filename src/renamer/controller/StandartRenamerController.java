@@ -5,22 +5,17 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import logger.ConsoleAreaAppender;
 import org.apache.log4j.Logger;
 import renamer.MainApp;
 import renamer.controller.preparing.MaskController;
 import renamer.controller.process.FileRenamerProcess;
 import renamer.model.FileItem;
+import renamer.storage.FieldsValuesStorage;
 import renamer.storage.FileItemsStorage;
 
-import java.io.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
-
-public class StandartRenamerController implements RenamerController {
+public class StandartRenamerController {
 
     //создание логгера
     public static final Logger LOGGER = Logger.getLogger(StandartRenamerController.class);
@@ -35,8 +30,7 @@ public class StandartRenamerController implements RenamerController {
     private ObservableList<FileItem> fileItemsList = FileItemsStorage.getInstance().getFileItemsList();
 
     //комбобокс
-    private ObservableList<String> comboBoxRegisterList = FXCollections.observableArrayList(
-            "Без изменений", "БОЛЬШИЕ БУКВЫ", "маленькие буквы");
+    private ObservableList<String> comboBoxRegisterList = FieldsValuesStorage.getInstance().getComboBoxRegisterList();
 
     //для метода добавления
     boolean isAddFolderSubfolder = true;
@@ -60,11 +54,6 @@ public class StandartRenamerController implements RenamerController {
     @FXML private ComboBox<String> comboBoxRegisterChanger;
 
 
-    //constructor
-    public StandartRenamerController() {
-        maskController.setRenamerController(this);
-    }
-
     //initialize
     public void initialize() {
 
@@ -75,46 +64,57 @@ public class StandartRenamerController implements RenamerController {
 
 
         //Первоначальное заполнение полей имени и расширения файла
-        textFieldFileNameMask.setText("[N]");
-        textFieldFileExtMask.setText("[T]");
+        setDefaultValuesFields();
+        FieldsValuesStorage.getInstance().setTextFieldFileNameMask(textFieldFileNameMask);
+        FieldsValuesStorage.getInstance().setTextFieldFileExtMask(textFieldFileExtMask);
+
+
+        //Отслеживание изменения поля, для автоматического применения маски имени файла
+        textFieldFileNameMask.textProperty().addListener((observable, oldValue, newValue) -> {
+            FieldsValuesStorage.getInstance().setTextFieldFileNameMask(textFieldFileNameMask);
+            maskController.applyMasks();
+        });
+        //Отслеживание изменения поля, для автоматического применения маски расширения файла
+        textFieldFileExtMask.textProperty().addListener((observable, oldValue, newValue) -> {
+            FieldsValuesStorage.getInstance().setTextFieldFileExtMask(textFieldFileExtMask);
+            maskController.applyMasks();
+        });
+
 
         //Инициализация спиннеров
         SpinnerValueFactory<Integer> svfStart = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE - 1000000, 1); // :-)
         spinnerCounterStartTo.setValueFactory(svfStart);
+        FieldsValuesStorage.getInstance().setSpinnerCounterStartTo(spinnerCounterStartTo);
         SpinnerValueFactory<Integer> svfStep = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1024);
         spinnerCounterStep.setValueFactory(svfStep);
+        FieldsValuesStorage.getInstance().setSpinnerCounterStep(spinnerCounterStep);
         SpinnerValueFactory<Integer> svfDigits = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50, 3);
         spinnerCounterDigits.setValueFactory(svfDigits);
+        FieldsValuesStorage.getInstance().setSpinnerCounterDigits(spinnerCounterDigits);
+
+        //Отслеживание изменения полей спиннеров
+        spinnerCounterStartTo.valueProperty().addListener((observable, oldValue, newValue) -> {
+            FieldsValuesStorage.getInstance().setSpinnerCounterStartTo(spinnerCounterStartTo);
+            maskController.applyMasks();
+        });
+        spinnerCounterStep.valueProperty().addListener((observable, oldValue, newValue) ->  {
+            FieldsValuesStorage.getInstance().setSpinnerCounterStep(spinnerCounterStep);
+            maskController.applyMasks();
+        });
+        spinnerCounterDigits.valueProperty().addListener((observable, oldValue, newValue) -> {
+            FieldsValuesStorage.getInstance().setSpinnerCounterDigits(spinnerCounterDigits);
+            maskController.applyMasks();
+        });
+
 
         //Заполнение комбобокса
         comboBoxRegisterChanger.setItems(comboBoxRegisterList);
         comboBoxRegisterChanger.setValue(comboBoxRegisterList.get(0));
 
-        //Отслеживание изменения поля, для автоматического применения маски имени файла
-        textFieldFileExtMask.textProperty().addListener((observable, oldValue, newValue) -> {
-            maskController.applyMasks();
-        });
-
-        //Отслеживание изменения поля, для автоматического применения маски расширения файла
-        textFieldFileNameMask.textProperty().addListener((observable, oldValue, newValue) -> {
-            maskController.applyMasks();
-        });
-
-        //Отслеживание изменения полей спиннеров
-        spinnerCounterStartTo.valueProperty().addListener((observable, oldValue, newValue) -> {
-            maskController.applyMasks();
-        });
-        spinnerCounterStep.valueProperty().addListener((observable, oldValue, newValue) ->  {
-            maskController.applyMasks();
-        });
-        spinnerCounterDigits.valueProperty().addListener((observable, oldValue, newValue) -> {
-            maskController.applyMasks();
-        });
-
         //Отслеживание изменения значений комбобокса
         comboBoxRegisterChanger.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            maskController.applyRegister(newValue);
-        }));
+            FieldsValuesStorage.getInstance().setComboBoxRegisterList(comboBoxRegisterList);
+            maskController.applyRegister(newValue);}));
 
         LOGGER.info("Готов к работе");
     }
@@ -123,7 +123,6 @@ public class StandartRenamerController implements RenamerController {
     //возврат к главному меню
     public void backToMenu() {
         mainApp.backToMenu();
-
     }
 
     //кнопка выполнить
@@ -143,90 +142,35 @@ public class StandartRenamerController implements RenamerController {
 
     }
 
-    //общий метод для добавления файлов и папок
-    private void addFiles() {
-
-        /** условие добавления папки и всех подпапок */
-        if (isAddFolderSubfolder && !isAddOnlyFiles) {
-            File dir = dirChooser();
-
-            //скан и добавление, включая подпапки
-            generateSubFoldersItemList(dir, fileItemsList);
-        }
-
-        /** условие добавления содержимого только текущей папки */
-        else if (!isAddFolderSubfolder && !isAddOnlyFiles) {
-            File dir = dirChooser();
-
-            for (File file : dir.listFiles()) {
-                //если имя файла не начинается с точки, все ок
-                if (!file.getName().startsWith(".") && file.isFile()) {
-                    fileItemsList.add(new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath()));
-                }
-            }
-        }
-
-        /** условие добавления только файлов */
-        else if (!isAddFolderSubfolder) {
-
-            FileChooser fileChooser = new FileChooser();
-            List<File> files = fileChooser.showOpenMultipleDialog(mainApp.getPrimaryStage());
-
-            fileItemsList.addAll(files.stream().filter(file -> !file.getName().startsWith(".") && file.isFile()).map(file -> new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath())).collect(Collectors.toList()));
-        }
-
-        //заполняем таблицу
-        fillTable();
-
-        LOGGER.info("В списке " + fileItemsList.size() + " файлов");
-    }
-
-    //вспомогательный метод диалога выбора папки
-    private File dirChooser() {
-        DirectoryChooser dirChooser = new DirectoryChooser();
-        dirChooser.getInitialDirectory();
-        File dir;
-        dir = dirChooser.showDialog(mainApp.getPrimaryStage());
-
-        return dir;
-    }
-
-    //вспомогательный метод для добавления содержимого папки и подпапок
-    private void generateSubFoldersItemList(File dir, ObservableList<FileItem> fileItemsList) {
-
-        for (File file : dir.listFiles()) {
-            if (file.isDirectory()) {
-                generateSubFoldersItemList(file, fileItemsList);
-                continue;
-            }
-            if (file.isFile()) {
-                //если имя файла не начинается с точки, все ок
-                if (!file.getName().startsWith(".")) {
-                    fileItemsList.add(new FileItem(file, file.getName(), file.getName(), file.length(), file.getAbsolutePath()));
-                }
-            }
-        }
-    }
-
     //добавление содержимого папки и подпапок в таблицу
     public void addFolderSubFoldersItems() {
         isAddFolderSubfolder = true;
         isAddOnlyFiles = false;
-        addFiles();
+            //передаем параметры этого пункта в метод добавления
+        FileItemsStorage.getInstance().addFiles(isAddFolderSubfolder, isAddOnlyFiles);
+            //заполняем таблицу
+        fillTable();
+
     }
 
     //запись содержимого папки в таблицу
     public void addFolderItems() {
         isAddFolderSubfolder = false;
         isAddOnlyFiles = false;
-        addFiles();
+            //передаем параметры этого пункта в метод добавления
+        FileItemsStorage.getInstance().addFiles(isAddFolderSubfolder, isAddOnlyFiles);
+            //заполняем таблицу
+        fillTable();
     }
 
     //добавление только выбранных файлов в таблицу
     public void addItems() {
         isAddFolderSubfolder = false;
         isAddOnlyFiles = true;
-        addFiles();
+            //передаем параметры этого пункта в метод добавления
+        FileItemsStorage.getInstance().addFiles(isAddFolderSubfolder, isAddOnlyFiles);
+            //заполняем таблицу
+        fillTable();
     }
 
     //удаление файла из таблицы
@@ -277,72 +221,58 @@ public class StandartRenamerController implements RenamerController {
         columnFilePath.setCellValueFactory(new PropertyValueFactory<>("filePath"));
 
         tableView.setItems(fileItemsList);
+
+        LOGGER.info("В списке " + fileItemsList.size() + " файлов");
     }
 
     //очистка списка файлов
     public void cleanItemList() {
         fileItemsList.clear();
+        setDefaultValuesFields();
         LOGGER.info("Список файлов очищен");
+    }
+
+    private void setDefaultValuesFields() {
+
+        textFieldFileNameMask.setText("[N]");
+        textFieldFileExtMask.setText("[T]");
     }
 
     /** Маски */
     //маска счетчика (в имени файла)
     public void applyMaskFileNameCounter() {
         textFieldFileNameMask.appendText("[C]");
+        FieldsValuesStorage.getInstance().setTextFieldFileNameMask(textFieldFileNameMask);
     }
-
     //маска имени файла
     public void applyMaskFileName() {
         textFieldFileNameMask.appendText("[N]");
+        FieldsValuesStorage.getInstance().setTextFieldFileNameMask(textFieldFileNameMask);
     }
-
     //маска имени файла по дате
     public void applyMaskFileNameDate() {
         textFieldFileNameMask.appendText("[YMD]");
+        FieldsValuesStorage.getInstance().setTextFieldFileNameMask(textFieldFileNameMask);
     }
-
     //маска имени файла по времени
     public void applyMaskFileNameTime() {
         textFieldFileNameMask.appendText("[hms]");
+        FieldsValuesStorage.getInstance().setTextFieldFileNameMask(textFieldFileNameMask);
     }
-
     //маска расширения файла
     public void applyMaskFileExtType() {
         textFieldFileExtMask.appendText("[T]");
+        FieldsValuesStorage.getInstance().setTextFieldFileExtMask(textFieldFileExtMask);
     }
-
     //маска счетчика (расширение файла)
     public void applyMaskFileExtCounter(){
         textFieldFileExtMask.appendText("[C]");
+        FieldsValuesStorage.getInstance().setTextFieldFileExtMask(textFieldFileExtMask);
     }
 
 
     /** setters and getters */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
-    }
-
-    public TextField getTextFieldFileNameMask() {
-        return textFieldFileNameMask;
-    }
-
-    public TextField getTextFieldFileExtMask() {
-        return textFieldFileExtMask;
-    }
-
-    public Spinner<Integer> getSpinnerCounterStartTo() {
-        return spinnerCounterStartTo;
-    }
-
-    public Spinner<Integer> getSpinnerCounterStep() {
-        return spinnerCounterStep;
-    }
-
-    public Spinner<Integer> getSpinnerCounterDigits() {
-        return spinnerCounterDigits;
-    }
-
-    public ObservableList<String> getComboBoxRegisterList() {
-        return comboBoxRegisterList;
     }
 }

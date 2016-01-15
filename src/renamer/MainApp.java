@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 import renamer.controller.ExifRenamerController;
 import renamer.controller.StandartRenamerController;
 import renamer.controller.StartMenuController;
+import renamer.storage.FieldsValuesStorage;
+import renamer.storage.FileItemsStorage;
 
 import java.io.IOException;
 
@@ -21,6 +23,9 @@ public class MainApp extends Application {
 
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("AK Rename Utility");
+
+        //сразу пробрасываем доступ к этому классу для FileItemsStorage
+        FileItemsStorage.getInstance().setMainApp(this);
 
         showStartMenuWindow();
     }
@@ -61,6 +66,7 @@ public class MainApp extends Application {
             StandartRenamerController controller = loader.getController();
             controller.setMainApp(this);
 
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -91,6 +97,13 @@ public class MainApp extends Application {
     //возврат к главному меню
     public void backToMenu() {
         getPrimaryStage().close();
+
+        //Чистка storage
+        FileItemsStorage.getInstance().getFileItemsList().clear();
+        FieldsValuesStorage.getInstance().fieldsSetNull();
+
+
+
         showStartMenuWindow();
     }
 

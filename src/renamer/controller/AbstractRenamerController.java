@@ -13,13 +13,14 @@ import renamer.model.FileItem;
 import renamer.storage.FieldsValuesStorage;
 import renamer.storage.FileItemsStorage;
 
+
 public abstract class AbstractRenamerController {
 
     //создание логгера
     public static final Logger LOGGER = Logger.getLogger(AbstractRenamerController.class);
 
     //даем контроллеру доступ к экземпляру mainApp
-    private MainApp mainApp;
+    public MainApp mainApp;
 
     //объявляем экземпляр maskController и в конструкторе передаем ему этот контроллер
     MaskController maskController = new MaskController();
@@ -29,8 +30,9 @@ public abstract class AbstractRenamerController {
     //комбобокс
     private ObservableList<String> comboBoxRegisterList = FieldsValuesStorage.getInstance().getComboBoxRegisterList();
     //для метода добавления
-    boolean isAddFolderSubfolder = true;
-    boolean isAddOnlyFiles = true;
+    boolean isAddFolderSubfolder;
+    boolean isAddOnlyFiles;
+    boolean isAddOnlyImages;
 
 
     //объявляем поля из FXML
@@ -38,7 +40,7 @@ public abstract class AbstractRenamerController {
     @FXML private TextField textFieldFileNameMask;
     @FXML private TextField textFieldFileExtMask;
 
-    @FXML private TableView<FileItem> tableView;
+    @FXML public TableView<FileItem> tableView;
     @FXML private TableColumn<FileItem, String> columnOldName;
     @FXML private TableColumn<FileItem, String> columnNewName;
     @FXML private TableColumn<FileItem, String> columnFileSize;
@@ -59,6 +61,8 @@ public abstract class AbstractRenamerController {
         ConsoleAreaAppender.setTextArea(consoleArea);
         LOGGER.addAppender(consoleAreaAppender);
 
+        //Передаем в storage ссылку на созданный логгер
+        FileItemsStorage.getInstance().setLOGGER(LOGGER);
 
         //Первоначальное заполнение полей имени и расширения файла
         textFieldFileNameMask.setText("[N]");
@@ -122,6 +126,7 @@ public abstract class AbstractRenamerController {
     //возврат к главному меню
     public void backToMenu() {
         mainApp.backToMenu();
+        LOGGER.removeAllAppenders();
     }
 
     //кнопка выполнить
@@ -146,7 +151,7 @@ public abstract class AbstractRenamerController {
         isAddFolderSubfolder = true;
         isAddOnlyFiles = false;
         //передаем параметры этого пункта в метод добавления
-        FileItemsStorage.getInstance().addFiles(isAddFolderSubfolder, isAddOnlyFiles);
+        FileItemsStorage.getInstance().addFiles(isAddFolderSubfolder, isAddOnlyFiles, isAddOnlyImages);
         //заполняем таблицу
         fillTable();
 
@@ -157,17 +162,16 @@ public abstract class AbstractRenamerController {
         isAddFolderSubfolder = false;
         isAddOnlyFiles = false;
         //передаем параметры этого пункта в метод добавления
-        FileItemsStorage.getInstance().addFiles(isAddFolderSubfolder, isAddOnlyFiles);
+        FileItemsStorage.getInstance().addFiles(isAddFolderSubfolder, isAddOnlyFiles, isAddOnlyImages);
         //заполняем таблицу
         fillTable();
     }
 
     //добавление только выбранных файлов в таблицу
     public void addItems() {
-        isAddFolderSubfolder = false;
         isAddOnlyFiles = true;
         //передаем параметры этого пункта в метод добавления
-        FileItemsStorage.getInstance().addFiles(isAddFolderSubfolder, isAddOnlyFiles);
+        FileItemsStorage.getInstance().addFiles(isAddFolderSubfolder, isAddOnlyFiles, isAddOnlyImages);
         //заполняем таблицу
         fillTable();
     }

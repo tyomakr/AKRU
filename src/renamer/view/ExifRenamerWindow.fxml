@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="renamer.controller.ExifRenamerController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1220.0" stylesheets="@css/exifRenamerWindow.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="renamer.controller.ExifRenamerController">
     <top>
         <Pane prefHeight="40.0" prefWidth="900.0" BorderPane.alignment="CENTER">
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#backToMenu" prefWidth="70.0" text="в Меню" textAlignment="CENTER" />
@@ -30,26 +31,29 @@
             </TableView>
             <Label layoutX="14.0" layoutY="327.0" text="Маска для имени файла" />
             <TextField fx:id="textFieldFileNameMask" layoutX="14.0" layoutY="349.0" prefHeight="26.0" prefWidth="178.0" />
-            <Label layoutX="215.0" layoutY="327.0" text="...расширения" />
-            <TextField fx:id="textFieldFileExtMask" layoutX="215.0" layoutY="349.0" prefHeight="26.0" prefWidth="98.0" />
-            <Button layoutX="14.0" layoutY="384.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="[N] - имя" onAction="#applyMaskFileName" textAlignment="CENTER" />
-            <Button layoutX="14.0" layoutY="432.0" mnemonicParsing="false" prefWidth="95.0" text="Дата (YMD)" onAction="#applyMaskFileNameDate" />
-            <Button layoutX="14.0" layoutY="465.0" mnemonicParsing="false" prefWidth="95.0" text="Время (hms)" onAction="#applyMaskFileNameTime" />
-            <Separator layoutX="195.0" layoutY="383.0" orientation="VERTICAL" prefHeight="120.0" />
-            <Separator layoutX="326.0" layoutY="334.0" orientation="VERTICAL" prefHeight="170.0" />
-            <Spinner fx:id="spinnerCounterStartTo" editable="true" layoutX="413.0" layoutY="349.0" prefHeight="26.0" prefWidth="90.0" />
-            <Spinner fx:id="spinnerCounterStep" editable="true" layoutX="413.0" layoutY="384.0" prefHeight="26.0" prefWidth="90.0" />
-            <Spinner fx:id="spinnerCounterDigits" editable="true" layoutX="413.0" layoutY="417.0" prefWidth="90.0" />
-            <Label layoutX="333.0" layoutY="354.0" text="Начинать с" />
-            <Label layoutX="333.0" layoutY="389.0" text="Шаг" />
-            <Label layoutX="333.0" layoutY="422.0" text="Цифр" />
-            <Label layoutX="335.0" layoutY="327.0" text="Параметры счетчика" />
-            <Button layoutX="96.0" layoutY="384.0" mnemonicParsing="false" text="[C] - счетчик"  onAction="#applyMaskFileNameCounter" textAlignment="CENTER" />
-            <Button layoutX="216.0" layoutY="417.0" mnemonicParsing="false" prefWidth="96.0" text="[C] - счетчик"  onAction="#applyMaskFileExtCounter" />
-            <Button layoutX="216.0" layoutY="384.0" mnemonicParsing="false" prefWidth="96.0" text="[T] - тип" onAction="#applyMaskFileExtType" />
-            <Label layoutX="552.0" layoutY="327.0" text="Изменение регистра" />
-            <ComboBox fx:id="comboBoxRegisterChanger" layoutX="552.0" layoutY="349.0" prefHeight="26.0" prefWidth="200.0" />
-            <Button alignment="CENTER" layoutX="552.0" layoutY="406.0" mnemonicParsing="false" prefHeight="95.0" prefWidth="95.0" text="ВЫПОЛНИТЬ" onAction="#runFileRenamerProcess" textAlignment="CENTER" />
+            <Label layoutX="223.0" layoutY="327.0" text="...расширения" />
+            <TextField fx:id="textFieldFileExtMask" layoutX="207.0" layoutY="349.0" prefHeight="26.0" prefWidth="98.0" />
+            <Button layoutX="14.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileName" prefHeight="26.0" prefWidth="71.0" text="[N] - имя" textAlignment="CENTER" />
+            <Button layoutX="14.0" layoutY="432.0" mnemonicParsing="false" onAction="#applyMaskFileNameDate" prefWidth="95.0" text="Дата (YMD)" />
+            <Button layoutX="14.0" layoutY="465.0" mnemonicParsing="false" onAction="#applyMaskFileNameTime" prefWidth="95.0" text="Время (hms)" />
+            <Separator layoutX="314.0" layoutY="334.0" orientation="VERTICAL" prefHeight="336.0" prefWidth="6.0" />
+            <Spinner fx:id="spinnerCounterStartTo" editable="true" layoutX="97.0" layoutY="554.0" prefHeight="26.0" prefWidth="90.0" />
+            <Spinner fx:id="spinnerCounterStep" editable="true" layoutX="97.0" layoutY="589.0" prefHeight="26.0" prefWidth="90.0" />
+            <Spinner fx:id="spinnerCounterDigits" editable="true" layoutX="97.0" layoutY="622.0" prefWidth="90.0" />
+            <Label layoutX="17.0" layoutY="559.0" text="Начинать с" />
+            <Label layoutX="17.0" layoutY="594.0" text="Шаг" />
+            <Label layoutX="17.0" layoutY="627.0" text="Цифр" />
+            <Label layoutX="16.0" layoutY="532.0" text="Параметры счетчика" />
+            <Button layoutX="96.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileNameCounter" text="[C] - счетчик" textAlignment="CENTER" />
+            <Button layoutX="206.0" layoutY="417.0" mnemonicParsing="false" onAction="#applyMaskFileExtCounter" prefWidth="96.0" text="[C] - счетчик" />
+            <Button layoutX="206.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileExtType" prefWidth="96.0" text="[T] - тип" />
+         <Separator layoutX="16.0" layoutY="515.0" prefHeight="4.0" prefWidth="300.0" />
+         <Separator layoutX="197.0" layoutY="334.0" orientation="VERTICAL" prefHeight="182.0" prefWidth="3.0" />
+         <Label layoutX="326.0" layoutY="328.0" text="Поля EXIF" textOverrun="CLIP">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Label>
             <BorderPane.margin>
                 <Insets bottom="5.0" left="5.0" top="5.0" />
             </BorderPane.margin>
@@ -66,57 +70,59 @@
             </BorderPane.margin></TextArea>
     </bottom>
    <center>
-        <Pane maxWidth="-Infinity" prefHeight="614.0" prefWidth="80.0" BorderPane.alignment="CENTER">
+        <Pane maxWidth="-Infinity" prefHeight="614.0" prefWidth="69.0" BorderPane.alignment="CENTER">
             <BorderPane.margin>
                 <Insets bottom="5.0" top="5.0" />
             </BorderPane.margin>
-            <Button layoutX="3.0" layoutY="33.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="Dd+" onAction="#addFolderSubFoldersItems" textAlignment="CENTER">
+            <Button layoutX="-2.0" layoutY="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addFolderSubFoldersItems" prefWidth="60.0" text="Dd+" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>
             </Button>
-            <Button layoutX="4.0" layoutY="287.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="Clean" onAction="#cleanItemList" textAlignment="CENTER">
+            <Button layoutX="-1.0" layoutY="255.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cleanItemList" prefWidth="60.0" text="Clean" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>
             </Button>
-            <Button layoutX="3.0" layoutY="117.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="F +" onAction="#addItems" textAlignment="CENTER">
+            <Button layoutX="-2.0" layoutY="85.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addItems" prefWidth="60.0" text="F +" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>
             </Button>
-            <Button layoutX="3.0" layoutY="148.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="F -" onAction="#removeItem" textAlignment="CENTER">
+            <Button layoutX="-2.0" layoutY="116.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#removeItem" prefWidth="60.0" text="F -" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>
             </Button>
-            <Button layoutX="4.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="UP" onAction="#moveItemUp" textAlignment="CENTER">
+            <Button layoutX="-1.0" layoutY="168.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveItemUp" prefWidth="60.0" text="UP" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>
             </Button>
-            <Button layoutX="4.0" layoutY="232.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="Down" onAction="#moveItemDown" textAlignment="CENTER">
+            <Button layoutX="-1.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveItemDown" prefWidth="60.0" text="Down" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>
             </Button>
-            <Button layoutX="3.0" layoutY="64.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" text="D +" onAction="#addFolderItems" textAlignment="CENTER">
+            <Button layoutX="-2.0" layoutY="32.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addFolderItems" prefWidth="60.0" text="D +" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="14.0" />
                 </font>
             </Button>
+         <Separator layoutX="61.0" layoutY="1.0" orientation="VERTICAL" prefHeight="315.0" prefWidth="8.0" />
         </Pane>
    </center>
    <right>
-      <Pane maxWidth="320.0" prefHeight="622.0" prefWidth="315.0" BorderPane.alignment="CENTER">
+      <Pane maxWidth="333.0" prefHeight="614.0" prefWidth="333.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>
          <children>
-            <ImageView fitHeight="300.0" fitWidth="300.0" layoutX="7.0" layoutY="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-               <effect>
-                  <Shadow />
-               </effect></ImageView>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="transparent" height="315.0" layoutX="2.0" stroke="#b6b7b9" strokeType="INSIDE" width="325.0" />
+            <ImageView fx:id="imageViewArea" fitHeight="313.0" fitWidth="323.0" layoutX="3.0" layoutY="1.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" smooth="false" />
+               <Button alignment="CENTER" layoutX="224.0" layoutY="555.0" mnemonicParsing="false" onAction="#runFileRenamerProcess" prefHeight="95.0" prefWidth="95.0" text="ВЫПОЛНИТЬ" textAlignment="CENTER" />
+               <Label layoutX="7.0" layoutY="602.0" text="Изменение регистра" />
+               <ComboBox fx:id="comboBoxRegisterChanger" layoutX="6.0" layoutY="624.0" prefHeight="26.0" prefWidth="200.0" />
          </children>
       </Pane>
    </right>

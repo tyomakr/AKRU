@@ -33,9 +33,9 @@
             <TextField fx:id="textFieldFileNameMask" layoutX="14.0" layoutY="349.0" prefHeight="26.0" prefWidth="178.0" />
             <Label layoutX="223.0" layoutY="327.0" text="...расширения" />
             <TextField fx:id="textFieldFileExtMask" layoutX="207.0" layoutY="349.0" prefHeight="26.0" prefWidth="98.0" />
-            <Button layoutX="14.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileName" prefHeight="26.0" prefWidth="71.0" text="[N] - имя" textAlignment="CENTER" />
-            <Button layoutX="14.0" layoutY="432.0" mnemonicParsing="false" onAction="#applyMaskFileNameDate" prefWidth="95.0" text="Дата (YMD)" />
-            <Button layoutX="14.0" layoutY="465.0" mnemonicParsing="false" onAction="#applyMaskFileNameTime" prefWidth="95.0" text="Время (hms)" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileName" prefHeight="26.0" prefWidth="71.0" text="[N] - имя" textAlignment="CENTER" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="432.0" mnemonicParsing="false" onAction="#applyMaskFileNameDate" prefWidth="95.0" text="Дата (YMD)" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="465.0" mnemonicParsing="false" onAction="#applyMaskFileNameTime" prefWidth="95.0" text="Время (hms)" />
             <Separator layoutX="314.0" layoutY="334.0" orientation="VERTICAL" prefHeight="336.0" prefWidth="6.0" />
             <Spinner fx:id="spinnerCounterStartTo" editable="true" layoutX="97.0" layoutY="554.0" prefHeight="26.0" prefWidth="90.0" />
             <Spinner fx:id="spinnerCounterStep" editable="true" layoutX="97.0" layoutY="589.0" prefHeight="26.0" prefWidth="90.0" />
@@ -44,9 +44,9 @@
             <Label layoutX="17.0" layoutY="594.0" text="Шаг" />
             <Label layoutX="17.0" layoutY="627.0" text="Цифр" />
             <Label layoutX="16.0" layoutY="532.0" text="Параметры счетчика" />
-            <Button layoutX="96.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileNameCounter" text="[C] - счетчик" textAlignment="CENTER" />
-            <Button layoutX="206.0" layoutY="417.0" mnemonicParsing="false" onAction="#applyMaskFileExtCounter" prefWidth="96.0" text="[C] - счетчик" />
-            <Button layoutX="206.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileExtType" prefWidth="96.0" text="[T] - тип" />
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="96.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileNameCounter" text="[C] - счетчик" textAlignment="CENTER" />
+            <Button alignment="CENTER" layoutX="206.0" layoutY="417.0" mnemonicParsing="false" onAction="#applyMaskFileExtCounter" prefWidth="96.0" text="[C] - счетчик" />
+            <Button alignment="CENTER" layoutX="206.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileExtType" prefWidth="96.0" text="[T] - тип" />
          <Separator layoutX="16.0" layoutY="515.0" prefHeight="4.0" prefWidth="300.0" />
          <Separator layoutX="197.0" layoutY="334.0" orientation="VERTICAL" prefHeight="182.0" prefWidth="3.0" />
          <Label layoutX="326.0" layoutY="328.0" text="Поля EXIF" textOverrun="CLIP">
@@ -54,6 +54,10 @@
                <Font name="System Bold" size="12.0" />
             </font>
          </Label>
+         <TextField fx:id="dateTimeShooting" disable="true" layoutX="449.0" layoutY="350.0" prefHeight="25.0" prefWidth="135.0" styleClass="field" />
+         <Label layoutX="326.0" layoutY="354.0" text="Дата и время съемки" />
+         <Button fx:id="buttonExifDate" alignment="CENTER" contentDisplay="CENTER" layoutX="599.0" layoutY="350.0" mnemonicParsing="false" text="Дата" />
+         <Button fx:id="buttonExifTime" alignment="CENTER" contentDisplay="CENTER" layoutX="650.0" layoutY="350.0" mnemonicParsing="false" text="Время" />
             <BorderPane.margin>
                 <Insets bottom="5.0" left="5.0" top="5.0" />
             </BorderPane.margin>
@@ -120,7 +124,7 @@
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="transparent" height="315.0" layoutX="2.0" stroke="#b6b7b9" strokeType="INSIDE" width="325.0" />
             <ImageView fx:id="imageViewArea" fitHeight="313.0" fitWidth="323.0" layoutX="3.0" layoutY="1.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" smooth="false" />
-               <Button alignment="CENTER" layoutX="224.0" layoutY="555.0" mnemonicParsing="false" onAction="#runFileRenamerProcess" prefHeight="95.0" prefWidth="95.0" text="ВЫПОЛНИТЬ" textAlignment="CENTER" />
+               <Button alignment="CENTER" contentDisplay="CENTER" layoutX="224.0" layoutY="555.0" mnemonicParsing="false" onAction="#runFileRenamerProcess" prefHeight="95.0" prefWidth="95.0" text="ВЫПОЛНИТЬ" textAlignment="CENTER" />
                <Label layoutX="7.0" layoutY="602.0" text="Изменение регистра" />
                <ComboBox fx:id="comboBoxRegisterChanger" layoutX="6.0" layoutY="624.0" prefHeight="26.0" prefWidth="200.0" />
          </children>

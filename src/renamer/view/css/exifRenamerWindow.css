@@ -1,1 +1,7 @@
 
+.field {
+    -fx-opacity: 1.0;
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+
+}

@@ -1,7 +1,11 @@
 package renamer.controller.preparing;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.exif.ExifSubIFDDirectory;
 import javafx.collections.ObservableList;
 import renamer.model.FileItem;
+import renamer.model.MetadataStorage;
 import renamer.storage.FieldsValuesStorage;
 import renamer.storage.FileItemsStorage;
 
@@ -57,28 +61,44 @@ public class MaskController {
         //получаем маски с textField
         String maskFileName = FieldsValuesStorage.getInstance().getTextFieldFileNameMask().getText();
 
-        //аттрибуты файла
-        //дата
-        String fileDate = "";
-        //время
-        String fileTime = "";
-        try {
-            BasicFileAttributes attributes = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
-            fileDate = attributes.creationTime().toString().substring(0, 10);
-            fileTime = attributes.creationTime().toString().substring(11, 19).replaceAll(":", "-");
-
-        } catch (IOException e) {e.printStackTrace();}
-
-        //Применяем шаблоны масок
+        /** Применяем шаблоны масок **/
         String newFileName;
-        newFileName = maskFileName.replaceAll("\\[N\\]", oldFileName);
-        newFileName = newFileName.replaceAll("\\[YMD\\]", fileDate);
-        newFileName = newFileName.replaceAll("\\[hms\\]", fileTime);
 
-        //применяем по надобности счетчик
+        //первоначальное старое имя
+        newFileName = maskFileName.replaceAll("\\[N\\]", oldFileName);
+
+        //дата и время (создания файла)
+        if (newFileName.contains("[YMD]") || newFileName.contains("[hms]")) {
+
+            String fileDate = "";
+            String fileTime = "";
+            try {
+                BasicFileAttributes attributes = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
+                fileDate = attributes.creationTime().toString().substring(0, 10);
+                fileTime = attributes.creationTime().toString().substring(11, 19).replaceAll(":", "-");
+
+            } catch (IOException e) {e.printStackTrace();}
+
+            newFileName = newFileName.replaceAll("\\[YMD\\]", fileDate);
+            newFileName = newFileName.replaceAll("\\[hms\\]", fileTime);
+        }
+
+        //счетчик
         if (newFileName.contains("[C]")) {
             newFileName = applyCounter(newFileName, index);
         }
+
+
+        /** ДЛЯ EXIF и прочих метаданных*/
+        if (newFileName.contains("EXIF")) {
+
+            if (newFileName.contains("EXIF_D") || newFileName.contains("EXIF_T")) {
+
+            }
+
+        }
+
+
         return newFileName;
     }
 
@@ -130,5 +150,10 @@ public class MaskController {
                 fileItem.setNewFileName(fileItem.getNewFileName().toLowerCase());
             }
         }
+    }
+
+    //Чтение метаданных (для EXIF раздела)
+    public void applyMetadata(FileItem fileItem) {
+        //TODO
     }
 }

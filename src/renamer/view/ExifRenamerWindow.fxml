@@ -54,10 +54,10 @@
                <Font name="System Bold" size="12.0" />
             </font>
          </Label>
-         <TextField fx:id="dateTimeShooting" disable="true" layoutX="449.0" layoutY="350.0" prefHeight="25.0" prefWidth="135.0" styleClass="field" />
-         <Label layoutX="326.0" layoutY="354.0" text="Дата и время съемки" />
-         <Button fx:id="buttonExifDate" alignment="CENTER" contentDisplay="CENTER" layoutX="599.0" layoutY="350.0" mnemonicParsing="false" text="Дата" />
-         <Button fx:id="buttonExifTime" alignment="CENTER" contentDisplay="CENTER" layoutX="650.0" layoutY="350.0" mnemonicParsing="false" text="Время" />
+         <TextField fx:id="textFieldDateTimeShooting" disable="true" layoutX="327.0" layoutY="350.0" prefHeight="25.0" prefWidth="135.0" styleClass="field" />
+         <Button fx:id="buttonExifDate" alignment="CENTER" contentDisplay="CENTER" layoutX="512.0" layoutY="350.0" mnemonicParsing="false" onAction="#applyMaskEXIFShootingDate" text="Дата" />
+         <Button fx:id="buttonExifTime" alignment="CENTER" contentDisplay="CENTER" layoutX="563.0" layoutY="350.0" mnemonicParsing="false" onAction="#applyMaskEXIFShootingTime" text="Время" />
+         <TextField fx:id="textFieldAuthor" disable="true" layoutX="328.0" layoutY="384.0" prefHeight="25.0" prefWidth="175.0" styleClass="field" />
             <BorderPane.margin>
                 <Insets bottom="5.0" left="5.0" top="5.0" />
             </BorderPane.margin>

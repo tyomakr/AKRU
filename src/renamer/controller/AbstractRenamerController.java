@@ -273,4 +273,12 @@ public abstract class AbstractRenamerController {
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
+
+    public TextField getTextFieldFileNameMask() {
+        return textFieldFileNameMask;
+    }
+
+    public TableView<FileItem> getTableView() {
+        return tableView;
+    }
 }

@@ -11,6 +11,7 @@ import java.io.File;
 public class FileItem {
 
     private File file;
+    private MetadataStorage metadata;
 
     private final StringProperty oldFileName;
     private StringProperty newFileName;
@@ -83,5 +84,13 @@ public class FileItem {
 
     public void setFilePath(String filePath) {
         this.filePath.set(filePath);
+    }
+
+    public MetadataStorage getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(MetadataStorage metadata) {
+        this.metadata = metadata;
     }
 }

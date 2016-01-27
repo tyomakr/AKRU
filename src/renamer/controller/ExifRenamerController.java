@@ -1,16 +1,15 @@
 package renamer.controller;
 
-import com.drew.imaging.ImageMetadataReader;
-import com.drew.metadata.Metadata;
-import com.drew.metadata.exif.ExifSubIFDDirectory;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 
+import renamer.controller.preparing.MetadataController;
 import renamer.model.FileItem;
-import java.io.File;
+import renamer.storage.FieldsValuesStorage;
 
 
 public class ExifRenamerController extends AbstractRenamerController{
@@ -19,7 +18,11 @@ public class ExifRenamerController extends AbstractRenamerController{
     @FXML private ImageView imageViewArea;
     @FXML private Rectangle imageRectangle;
 
-    @FXML private TextField dateTimeShooting;
+    @FXML private TextField textFieldDateTimeShooting;
+    @FXML private TextField textFieldAuthor;
+    @FXML private Button buttonExifDate;
+    @FXML private Button buttonExifTime;
+
 
 
     @Override
@@ -28,15 +31,24 @@ public class ExifRenamerController extends AbstractRenamerController{
         super.initialize();
         isAddOnlyImages = true;
 
+
         //отслеживание выделенного файла в таблице для показа превью фотографии
-        super.tableView.getSelectionModel().selectedItemProperty().addListener(
+        super.getTableView().getSelectionModel().selectedItemProperty().addListener(
                 ((observable, oldValue, newValue) -> showPhotoPreview(newValue))
         );
-
-        //test
-        super.tableView.getSelectionModel().selectedItemProperty().addListener(
-                (((observable, oldValue, newValue) -> readMetadata(newValue)))
+        //отслеживание метаданных выделенного файла для вывода в информационных полях
+        super.getTableView().getSelectionModel().selectedItemProperty().addListener(
+                (((observable, oldValue, newValue) -> showMetadata(newValue)))
         );
+
+
+    }
+
+    @Override
+    public void cleanItemList() {
+        textFieldDateTimeShooting.clear();
+        imageViewArea.setImage(null);
+        super.cleanItemList();
 
 
     }
@@ -44,40 +56,43 @@ public class ExifRenamerController extends AbstractRenamerController{
     //показ превью фотокарточки)
     private void showPhotoPreview(FileItem fileItem) {
 
-        String previewPhotoPath = fileItem.getFile().toURI().toString();
-        Image previewPhoto = new Image(previewPhotoPath);
-        imageViewArea.setImage(previewPhoto);
-        imageViewArea.setFitHeight(313);
-        imageViewArea.setFitWidth(323);
+        if (fileItem != null) {
+            String previewPhotoPath = fileItem.getFile().toURI().toString();
+            Image previewPhoto = new Image(previewPhotoPath);
+            imageViewArea.setImage(previewPhoto);
+            imageViewArea.setFitHeight(313);
+            imageViewArea.setFitWidth(323);
 
-        centerImage();
+            centerImage();
+        }
     }
 
+    //чтение метаданных для вывода в инфополя
+    private void showMetadata(FileItem fileItem) {
 
-    private void readMetadata(FileItem fileItem) {
+        if (fileItem != null) {
+            MetadataController.showMetadataPreview(fileItem);
 
-        File jpegFile = fileItem.getFile();
-        try {
-
-            Metadata metadata = ImageMetadataReader.readMetadata(jpegFile);
-
-            ExifSubIFDDirectory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
-            String exifDateTimeShooting = directory.getString(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
-
-            exifDateTimeShooting = exifDateTimeShooting.replaceAll(":", "-");
-            dateTimeShooting.setText(exifDateTimeShooting);
-
-                
+            textFieldDateTimeShooting.setText(fileItem.getMetadata().getEXIFDate() + " " + fileItem.getMetadata().getEXIFTime());
+            textFieldAuthor.setText(fileItem.getMetadata().getAuthor());
 
 
-
-
-        } catch (Exception e) {
-            LOGGER.error("ОШИБКА: " + e.getMessage());
         }
 
-
     }
+
+    //кнопка ДАТА (съемки)
+    public void applyMaskEXIFShootingDate() {
+        super.getTextFieldFileNameMask().appendText("[EXIF_D]");
+        FieldsValuesStorage.getInstance().setTextFieldFileNameMask(super.getTextFieldFileNameMask());
+    }
+
+    //кнопка ВРЕМЯ (съемки)
+    public void applyMaskEXIFShootingTime() {
+        super.getTextFieldFileNameMask().appendText("[EXIF_T]");
+        FieldsValuesStorage.getInstance().setTextFieldFileNameMask(super.getTextFieldFileNameMask());
+    }
+
 
     //центрование превьюшки в imageView
     private void centerImage() {

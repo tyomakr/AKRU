@@ -15,7 +15,9 @@ public class MetadataController {
 
         File jpegFile = fileItem.getFile();
         MetadataStorage metadataStorage =  new MetadataStorage();
-
+        if (fileItem.getMetadata() != null) {
+            metadataStorage = fileItem.getMetadata();
+        }
 
         try {
             Metadata metadata = ImageMetadataReader.readMetadata(jpegFile);

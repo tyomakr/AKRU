@@ -2,9 +2,9 @@ package renamer.model;
 
 public class MetadataStorage {
 
-    private String EXIFDate;
-    private String EXIFTime;
-    private String author;
+    private String EXIFDate = null;
+    private String EXIFTime = null;
+    private String author = null;
 
     //constructors
     public MetadataStorage() {}

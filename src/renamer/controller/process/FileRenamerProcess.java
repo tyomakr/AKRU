@@ -6,6 +6,7 @@ import renamer.model.FileItem;
 import renamer.storage.FileItemsStorage;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class FileRenamerProcess {
 
@@ -22,6 +23,9 @@ public class FileRenamerProcess {
 
     //главный метод
     public void rename() {
+
+        //проверяем на новые одинаковые имена
+        checkingFileNames();
 
         //список тредов
         ArrayList<RenThread> threadsList = new ArrayList<>();
@@ -93,5 +97,75 @@ public class FileRenamerProcess {
         }
 
         LOGGER.info("Процесс завершен. Проблемных файлов - " + brokenFilesCounter);
+    }
+
+    //проверка на наличие одинаковых имен перед переименованием
+    public void checkingFileNames() {
+
+        LOGGER.info("Проверяем на недопустимые символы");
+        for(int i = 0; i < fileItemsList.size(); i++) {
+            String file = fileItemsList.get(i).getNewFileName();
+            file = illegalCharactersReplace(file);
+            fileItemsList.get(i).setNewFileName(file);
+        }
+
+
+        LOGGER.info("Проверяем на одинаковые имена");
+        for(int i = 0; i < fileItemsList.size(); i++) {
+
+            String file1 = fileItemsList.get(i).getNewFileName();
+            int count = 0;
+
+            for(int j = 0; j < fileItemsList.size(); j++) {
+                String file2 = fileItemsList.get(j).getNewFileName();
+
+                if(file1.equalsIgnoreCase(file2)) {
+                    count ++;
+                }
+                //если совпадений более одного
+                if(count > 1) {
+                    String fileName = fileItemsList.get(j).getNewFileName();
+                    LOGGER.warn("Дублирование имен файлов при переименовании");
+
+                    //если у файла нет расширения
+                    if (!fileName.contains(".")) {
+                        fileName = fileName + "____" + count;
+                    }
+
+                    //если расширение присутствует
+                    else {
+                        //отрезаем имя файла
+                        fileName = fileItemsList.get(j).getNewFileName().substring(0, fileItemsList.get(j).getNewFileName().lastIndexOf("."));
+                        //дописываем значение счетчика
+                        fileName = fileName + "____" + count;
+                        //получаем расширение файла
+                        int extPos = fileItemsList.get(j).getNewFileName().lastIndexOf(".") + 1;
+                        String ext = fileItemsList.get(j).getNewFileName().substring(extPos);
+                        //приклеиваем его к измененному имени файла
+                        fileName = fileName + "." + ext;
+                    }
+
+                    fileItemsList.get(j).setNewFileName(fileName);
+                    LOGGER.warn("Фвйл " + fileItemsList.get(j).getNewFileName() + " (Старое имя: " + fileItemsList.get(j).getOldFileName() + ") будет переименован в " + fileName);
+                }
+            }
+        }
+    }
+
+    //выпиливаем с имени файла недопустимые символы (если вдруг где-то их упустили)
+    private String illegalCharactersReplace (String fileName) {
+
+        fileName = fileName.replaceAll(":", "-");       //отделяет букву диска или имя альтернативного потока данных
+        fileName = fileName.replaceAll("\\\\", "-");    //разделитель подкаталогов
+        fileName = fileName.replaceAll("\\/", "-");     //разделитель ключей командного интерпретатора
+        fileName = fileName.replaceAll("\\*", "-");     //заменяющий символ
+        fileName = fileName.replaceAll("\\?", "-");     //заменяющий символ
+        fileName = fileName.replaceAll("\"", "-");      //используется для указания путей, содержащих пробелы
+        fileName = fileName.replaceAll("\\<", "-");     //перенаправление ввода
+        fileName = fileName.replaceAll("\\>", "-");     //перенаправление вывода
+        fileName = fileName.replaceAll("\\|", "-");     //обозначает конвейер
+        fileName = fileName.replaceAll("\\+", "-");     //конкатенация
+
+        return fileName;
     }
 }

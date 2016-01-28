@@ -1,7 +1,6 @@
 package renamer.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,9 +19,10 @@ public class ExifRenamerController extends AbstractRenamerController{
 
     @FXML private TextField textFieldDateTimeShooting;
     @FXML private TextField textFieldAuthor;
-    @FXML private Button buttonExifDate;
-    @FXML private Button buttonExifTime;
-
+    @FXML private TextField textFieldCameraModel;
+    @FXML private TextField textFieldFocalLength;
+    @FXML private TextField textFieldWidth;
+    @FXML private TextField textFieldHeight;
 
 
     @Override
@@ -71,12 +71,14 @@ public class ExifRenamerController extends AbstractRenamerController{
     private void showMetadata(FileItem fileItem) {
 
         if (fileItem != null) {
-            MetadataController.showMetadataPreview(fileItem);
+            MetadataController.readMetadata(fileItem);
 
             textFieldDateTimeShooting.setText(fileItem.getMetadata().getEXIFDate() + " " + fileItem.getMetadata().getEXIFTime());
             textFieldAuthor.setText(fileItem.getMetadata().getAuthor());
-
-
+            textFieldCameraModel.setText(fileItem.getMetadata().getCameraModel());
+            textFieldFocalLength.setText(fileItem.getMetadata().getFocalLength());
+            textFieldWidth.setText(fileItem.getMetadata().getImageWidth());
+            textFieldHeight.setText(fileItem.getMetadata().getImageHeight());
         }
 
     }
@@ -85,14 +87,51 @@ public class ExifRenamerController extends AbstractRenamerController{
     public void applyMaskEXIFShootingDate() {
         super.getTextFieldFileNameMask().appendText("[EXIF_D]");
         FieldsValuesStorage.getInstance().setTextFieldFileNameMask(super.getTextFieldFileNameMask());
+        textFieldDateTimeShooting.setText(FieldsValuesStorage.getInstance().setOfValuesValue());
+
     }
 
     //кнопка ВРЕМЯ (съемки)
     public void applyMaskEXIFShootingTime() {
         super.getTextFieldFileNameMask().appendText("[EXIF_T]");
         FieldsValuesStorage.getInstance().setTextFieldFileNameMask(super.getTextFieldFileNameMask());
+        textFieldDateTimeShooting.setText(FieldsValuesStorage.getInstance().setOfValuesValue());
     }
 
+    //кнопка автор (artist)
+    public void applyMaskEXIFAuthor() {
+        super.getTextFieldFileNameMask().appendText("[EXIF_Author]");
+        FieldsValuesStorage.getInstance().setTextFieldFileNameMask(super.getTextFieldFileNameMask());
+        textFieldAuthor.setText(FieldsValuesStorage.getInstance().setOfValuesValue());
+    }
+
+    //кнопка камера
+    public void applyMaskEXIFCamera() {
+        super.getTextFieldFileNameMask().appendText("[EXIF_Camera]");
+        FieldsValuesStorage.getInstance().setTextFieldFileNameMask(super.getTextFieldFileNameMask());
+        textFieldCameraModel.setText(FieldsValuesStorage.getInstance().setOfValuesValue());
+    }
+
+    //кнопка фокусное расстояние
+    public void applyMaskEXIFFocalLength() {
+        super.getTextFieldFileNameMask().appendText("[EXIF_FL]");
+        FieldsValuesStorage.getInstance().setTextFieldFileNameMask(super.getTextFieldFileNameMask());
+        textFieldFocalLength.setText(FieldsValuesStorage.getInstance().setOfValuesValue());
+    }
+
+    //кнопка ширина изображения
+    public void applyMaskEXIFWidth() {
+        super.getTextFieldFileNameMask().appendText("[EXIF_W]");
+        FieldsValuesStorage.getInstance().setTextFieldFileNameMask(super.getTextFieldFileNameMask());
+        textFieldWidth.setText(FieldsValuesStorage.getInstance().setOfValuesValue());
+    }
+
+    //кнопка высота изображения
+    public void applyMaskEXIFHeight() {
+        super.getTextFieldFileNameMask().appendText("[EXIF_H]");
+        FieldsValuesStorage.getInstance().setTextFieldFileNameMask(super.getTextFieldFileNameMask());
+        textFieldHeight.setText(FieldsValuesStorage.getInstance().setOfValuesValue());
+    }
 
     //центрование превьюшки в imageView
     private void centerImage() {

@@ -1,11 +1,7 @@
 package renamer.controller.preparing;
 
-import com.drew.imaging.ImageMetadataReader;
-import com.drew.metadata.Metadata;
-import com.drew.metadata.exif.ExifSubIFDDirectory;
 import javafx.collections.ObservableList;
 import renamer.model.FileItem;
-import renamer.model.MetadataStorage;
 import renamer.storage.FieldsValuesStorage;
 import renamer.storage.FileItemsStorage;
 
@@ -91,9 +87,28 @@ public class MaskController {
 
         /** ДЛЯ EXIF и прочих метаданных*/
         if (newFileName.contains("EXIF")) {
+            //читаем метаданные текущего файла и записываем их в metadataStorage
+            MetadataController.readMetadata(fileItemsList.get(index));
 
-            if (newFileName.contains("EXIF_D") || newFileName.contains("EXIF_T")) {
+            if (newFileName.contains("[EXIF_D]") || newFileName.contains("[EXIF_T]")) {
+                newFileName = newFileName.replaceAll("\\[EXIF_D\\]", fileItemsList.get(index).getMetadata().getEXIFDate());
+                newFileName = newFileName.replaceAll("\\[EXIF_T\\]", fileItemsList.get(index).getMetadata().getEXIFTime());
+            }
 
+            if (newFileName.contains("[EXIF_Author]")) {
+                newFileName = newFileName.replaceAll("\\[EXIF_Author\\]", fileItemsList.get(index).getMetadata().getAuthor());
+            }
+            if (newFileName.contains("[EXIF_Camera]")) {
+                newFileName = newFileName.replaceAll("\\[EXIF_Camera\\]", fileItemsList.get(index).getMetadata().getCameraModel());
+            }
+            if (newFileName.contains("[EXIF_FL]")) {
+                newFileName = newFileName.replaceAll("\\[EXIF_FL\\]", fileItemsList.get(index).getMetadata().getFocalLength());
+            }
+            if (newFileName.contains("[EXIF_W]")) {
+                newFileName = newFileName.replaceAll("\\[EXIF_W\\]", fileItemsList.get(index).getMetadata().getImageWidth());
+            }
+            if (newFileName.contains("[EXIF_H]")) {
+                newFileName = newFileName.replaceAll("\\[EXIF_H\\]", fileItemsList.get(index).getMetadata().getImageHeight());
             }
 
         }

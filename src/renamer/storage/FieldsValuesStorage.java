@@ -33,6 +33,10 @@ public class FieldsValuesStorage {
         spinnerCounterDigits = null;
     }
 
+    //для EXIF полей
+    public String setOfValuesValue() {
+        return "множество значений";
+    }
 
     //setters and getters
     public static FieldsValuesStorage getInstance() {return instance;}

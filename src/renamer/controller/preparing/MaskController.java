@@ -110,6 +110,9 @@ public class MaskController {
             if (newFileName.contains("[EXIF_H]")) {
                 newFileName = newFileName.replaceAll("\\[EXIF_H\\]", fileItemsList.get(index).getMetadata().getImageHeight());
             }
+            if (newFileName.contains("[EXIF_ISO")) {
+                newFileName = newFileName.replaceAll("\\[EXIF_ISO\\]", fileItemsList.get(index).getMetadata().getIsoSpeed());
+            }
 
         }
 
@@ -167,8 +170,4 @@ public class MaskController {
         }
     }
 
-    //Чтение метаданных (для EXIF раздела)
-    public void applyMetadata(FileItem fileItem) {
-        //TODO
-    }
 }

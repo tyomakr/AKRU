@@ -67,6 +67,8 @@
          <TextField fx:id="textFieldHeight" disable="true" editable="false" layoutX="403.0" layoutY="483.0" prefHeight="25.0" prefWidth="70.0" styleClass="field" />
          <Button layoutX="511.0" layoutY="483.0" mnemonicParsing="false" onAction="#applyMaskEXIFWidth" text="Ширина" />
          <Button layoutX="576.0" layoutY="483.0" mnemonicParsing="false" onAction="#applyMaskEXIFHeight" text="Высота" />
+         <TextField fx:id="textFieldISO" disable="true" editable="false" layoutX="329.0" layoutY="515.0" prefWidth="135.0" styleClass="field" />
+         <Button layoutX="511.0" layoutY="515.0" mnemonicParsing="false" onAction="#applyMaskEXIFIso" text="ISO" />
             <BorderPane.margin>
                 <Insets bottom="5.0" left="5.0" top="5.0" />
             </BorderPane.margin>

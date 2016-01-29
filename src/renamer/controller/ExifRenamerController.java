@@ -23,6 +23,7 @@ public class ExifRenamerController extends AbstractRenamerController{
     @FXML private TextField textFieldFocalLength;
     @FXML private TextField textFieldWidth;
     @FXML private TextField textFieldHeight;
+    @FXML private TextField textFieldISO;
 
 
     @Override
@@ -79,6 +80,7 @@ public class ExifRenamerController extends AbstractRenamerController{
             textFieldFocalLength.setText(fileItem.getMetadata().getFocalLength());
             textFieldWidth.setText(fileItem.getMetadata().getImageWidth());
             textFieldHeight.setText(fileItem.getMetadata().getImageHeight());
+            textFieldISO.setText(fileItem.getMetadata().getIsoSpeed());
         }
 
     }
@@ -132,6 +134,14 @@ public class ExifRenamerController extends AbstractRenamerController{
         FieldsValuesStorage.getInstance().setTextFieldFileNameMask(super.getTextFieldFileNameMask());
         textFieldHeight.setText(FieldsValuesStorage.getInstance().setOfValuesValue());
     }
+
+    //кнопка режим вспышки
+    public void applyMaskEXIFIso() {
+        super.getTextFieldFileNameMask().appendText("[EXIF_ISO]");
+        FieldsValuesStorage.getInstance().setTextFieldFileNameMask(super.getTextFieldFileNameMask());
+        textFieldISO.setText(FieldsValuesStorage.getInstance().setOfValuesValue());
+    }
+
 
     //центрование превьюшки в imageView
     private void centerImage() {

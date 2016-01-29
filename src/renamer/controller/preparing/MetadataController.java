@@ -74,6 +74,17 @@ public class MetadataController {
                 metadataStorage.setImageWidth("[unknown height]");
             }
 
+            //ISO
+            try {
+                String isoSpeed = directory1.getString(ExifSubIFDDirectory.TAG_ISO_EQUIVALENT);
+                if (!isoSpeed.isEmpty()) {
+                    metadataStorage.setIsoSpeed(isoSpeed);
+                }
+                else throw new NullPointerException();
+            } catch (NullPointerException e) {
+                metadataStorage.setIsoSpeed("[unknown ISO]");
+            }
+
 
             //автор
             ExifIFD0Directory directory2 = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);

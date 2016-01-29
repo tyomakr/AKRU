@@ -11,7 +11,6 @@ public class MetadataStorage {
     private String apertureValue = null;
     private String shutterSpeed = null;
     private String isoSpeed = null;
-    private String flashMode = null;
 
     private String imageWidth = null;
     private String imageHeight = null;
@@ -86,14 +85,6 @@ public class MetadataStorage {
 
     public void setIsoSpeed(String isoSpeed) {
         this.isoSpeed = isoSpeed;
-    }
-
-    public String getFlashMode() {
-        return flashMode;
-    }
-
-    public void setFlashMode(String flashMode) {
-        this.flashMode = flashMode;
     }
 
     public String getImageWidth() {

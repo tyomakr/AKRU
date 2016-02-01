@@ -84,7 +84,7 @@ public class FileItemsStorage {
     }
 
     //вспомогательный метод для добавления содержимого папки
-    private void additionFiles(File file, boolean isAddOnlyImages) {
+    public void additionFiles(File file, boolean isAddOnlyImages) {
 
         //если имя файла не начинается с точки, все ок
         if (!file.getName().startsWith(".") && file.isFile()) {
@@ -108,7 +108,7 @@ public class FileItemsStorage {
 
         try {
             Files.walk(Paths.get(dir.getAbsolutePath())).forEach(filePath -> {
-                if (Files.isRegularFile(filePath)) {
+                if (!Files.isDirectory(filePath)) {
                     additionFiles(filePath.toFile(), isAddOnlyImages);
                 }
             });

@@ -1,0 +1,25 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="AKRU">
+    <output-path>$PROJECT_DIR$/out/artifacts/AKRU</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="renamer.MainApp" />
+        <option name="description" value="" />
+        <option name="height" value="500" />
+        <option name="htmlParamFile" value="" />
+        <option name="nativeBundle" value="all" />
+        <option name="paramFile" value="" />
+        <option name="title" value="AKRU" />
+        <option name="vendor" value="AK" />
+        <option name="width" value="500" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="AKRU.jar">
+        <element id="module-output" name="AKRU" />
+      </element>
+      <element id="library" level="project" name="com.drewnoakes:metadata-extractor:2.8.1" />
+      <element id="library" level="project" name="log4j:log4j:1.2.17" />
+    </root>
+  </artifact>
+</component>

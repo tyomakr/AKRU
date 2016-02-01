@@ -74,17 +74,6 @@ public class MetadataController {
                 metadataStorage.setImageWidth("[unknown height]");
             }
 
-            //ISO
-            try {
-                String isoSpeed = directory1.getString(ExifSubIFDDirectory.TAG_ISO_EQUIVALENT);
-                if (!isoSpeed.isEmpty()) {
-                    metadataStorage.setIsoSpeed(isoSpeed);
-                }
-                else throw new NullPointerException();
-            } catch (NullPointerException e) {
-                metadataStorage.setIsoSpeed("[unknown ISO]");
-            }
-
 
             //автор
             ExifIFD0Directory directory2 = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
@@ -107,6 +96,17 @@ public class MetadataController {
                 else throw new NullPointerException();
             } catch (NullPointerException e) {
                 metadataStorage.setCameraModel("[unknown camera]");
+            }
+
+            //программа
+            try {
+                String software = directory2.getString(ExifIFD0Directory.TAG_SOFTWARE);
+                if (!software.isEmpty()){
+                    metadataStorage.setSoftware(software);
+                }
+                else throw new NullPointerException();
+            } catch (NullPointerException e) {
+                metadataStorage.setSoftware("[unknown software]");
             }
 
             //записываем метаданные в fileItem storage

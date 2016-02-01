@@ -110,8 +110,8 @@ public class MaskController {
             if (newFileName.contains("[EXIF_H]")) {
                 newFileName = newFileName.replaceAll("\\[EXIF_H\\]", fileItemsList.get(index).getMetadata().getImageHeight());
             }
-            if (newFileName.contains("[EXIF_ISO")) {
-                newFileName = newFileName.replaceAll("\\[EXIF_ISO\\]", fileItemsList.get(index).getMetadata().getIsoSpeed());
+            if (newFileName.contains("[EXIF_Soft")) {
+                newFileName = newFileName.replaceAll("\\[EXIF_SOFT\\]", fileItemsList.get(index).getMetadata().getSoftware());
             }
 
         }

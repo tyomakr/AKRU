@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
+        
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
@@ -26,7 +25,7 @@
                     <TableColumn fx:id="columnFilePath" editable="false" prefWidth="250.0" text="Местоположение" />
                 </columns>
                 <padding>
-                    <Insets bottom="5.0" left="5.0" top="5.0" />
+                    <Insets bottom="5.0" left="5.0" top="5.0" right="2.0" />
                 </padding>
             </TableView>
             <Label layoutX="14.0" layoutY="327.0" text="Маска для имени файла" />
@@ -54,21 +53,21 @@
                <Font name="System Bold" size="12.0" />
             </font>
          </Label>
-         <TextField fx:id="textFieldDateTimeShooting" disable="true" editable="false" layoutX="327.0" layoutY="350.0" prefHeight="25.0" prefWidth="135.0" styleClass="field" />
-         <Button alignment="CENTER" contentDisplay="CENTER" layoutX="512.0" layoutY="350.0" mnemonicParsing="false" onAction="#applyMaskEXIFShootingDate" text="Дата" />
-         <Button alignment="CENTER" contentDisplay="CENTER" layoutX="558.0" layoutY="350.0" mnemonicParsing="false" onAction="#applyMaskEXIFShootingTime" text="Время" />
-         <TextField fx:id="textFieldAuthor" disable="true" editable="false" layoutX="328.0" layoutY="382.0" prefHeight="25.0" prefWidth="175.0" styleClass="field" />
-         <Button layoutX="512.0" layoutY="383.0" mnemonicParsing="false" onAction="#applyMaskEXIFAuthor" text="Автор" />
-         <TextField fx:id="textFieldCameraModel" disable="true" editable="false" layoutX="328.0" layoutY="415.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="135.0" styleClass="field" />
-         <Button layoutX="512.0" layoutY="415.0" mnemonicParsing="false" onAction="#applyMaskEXIFCamera" text="Камера" />
-         <Button layoutX="512.0" layoutY="449.0" mnemonicParsing="false" onAction="#applyMaskEXIFFocalLength" text="Фокусное расстояние" />
-         <TextField fx:id="textFieldFocalLength" disable="true" editable="false" layoutX="328.0" layoutY="449.0" prefHeight="25.0" prefWidth="135.0" styleClass="field" />
-         <TextField fx:id="textFieldWidth" disable="true" editable="false" layoutX="328.0" layoutY="483.0" prefHeight="25.0" prefWidth="70.0" styleClass="field" />
-         <TextField fx:id="textFieldHeight" disable="true" editable="false" layoutX="403.0" layoutY="483.0" prefHeight="25.0" prefWidth="70.0" styleClass="field" />
-         <Button layoutX="511.0" layoutY="483.0" mnemonicParsing="false" onAction="#applyMaskEXIFWidth" text="Ширина" />
-         <Button layoutX="576.0" layoutY="483.0" mnemonicParsing="false" onAction="#applyMaskEXIFHeight" text="Высота" />
-         <TextField fx:id="textFieldISO" disable="true" editable="false" layoutX="329.0" layoutY="515.0" prefWidth="135.0" styleClass="field" />
-         <Button layoutX="511.0" layoutY="515.0" mnemonicParsing="false" onAction="#applyMaskEXIFIso" text="ISO" />
+         <TextField fx:id="textFieldDateTimeShooting" disable="true" editable="false" layoutX="328.0" layoutY="350.0" prefHeight="25.0" prefWidth="150.0" styleClass="field" />
+         <Button alignment="CENTER" contentDisplay="CENTER" layoutX="510.0" layoutY="350.0" mnemonicParsing="false" onAction="#applyMaskEXIFShootingDate" prefWidth="65.0" text="Дата" />
+         <Button alignment="CENTER" contentDisplay="CENTER" layoutX="581.0" layoutY="350.0" mnemonicParsing="false" onAction="#applyMaskEXIFShootingTime" prefWidth="65.0" text="Время" />
+         <TextField fx:id="textFieldAuthor" disable="true" editable="false" layoutX="328.0" layoutY="444.0" prefHeight="25.0" prefWidth="150.0" styleClass="field" />
+         <Button layoutX="510.0" layoutY="443.0" mnemonicParsing="false" onAction="#applyMaskEXIFAuthor" prefWidth="100.0" text="Автор" />
+         <TextField fx:id="textFieldCameraModel" disable="true" editable="false" layoutX="328.0" layoutY="477.0" prefHeight="25.0" prefWidth="150.0" styleClass="field" />
+         <Button layoutX="510.0" layoutY="477.0" mnemonicParsing="false" onAction="#applyMaskEXIFCamera" prefWidth="100.0" text="Камера" />
+         <Button layoutX="510.0" layoutY="568.0" mnemonicParsing="false" onAction="#applyMaskEXIFFocalLength" prefWidth="140.0" text="Фокусное расстояние" />
+         <TextField fx:id="textFieldFocalLength" disable="true" editable="false" layoutX="328.0" layoutY="568.0" prefHeight="25.0" prefWidth="150.0" styleClass="field" />
+         <TextField fx:id="textFieldWidth" disable="true" editable="false" layoutX="328.0" layoutY="382.0" prefHeight="25.0" prefWidth="72.0" styleClass="field" />
+         <TextField fx:id="textFieldHeight" disable="true" editable="false" layoutX="406.0" layoutY="382.0" prefHeight="25.0" prefWidth="72.0" styleClass="field" />
+         <Button layoutX="510.0" layoutY="382.0" mnemonicParsing="false" onAction="#applyMaskEXIFWidth" prefWidth="65.0" text="Ширина" />
+         <Button layoutX="581.0" layoutY="382.0" mnemonicParsing="false" onAction="#applyMaskEXIFHeight" prefWidth="65.0" text="Высота" />
+         <TextField fx:id="textFieldSoftware" disable="true" editable="false" layoutX="328.0" layoutY="511.0" prefWidth="150.0" styleClass="field" />
+         <Button layoutX="510.0" layoutY="511.0" mnemonicParsing="false" onAction="#applyMaskEXIFSoftware" prefWidth="100.0" text="Программа" />
             <BorderPane.margin>
                 <Insets bottom="5.0" left="5.0" top="5.0" />
             </BorderPane.margin>

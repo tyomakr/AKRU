@@ -10,7 +10,6 @@ import renamer.controller.preparing.MetadataController;
 import renamer.model.FileItem;
 import renamer.storage.FieldsValuesStorage;
 
-
 public class ExifRenamerController extends AbstractRenamerController{
 
     //объявляем поля из FXML
@@ -23,15 +22,14 @@ public class ExifRenamerController extends AbstractRenamerController{
     @FXML private TextField textFieldFocalLength;
     @FXML private TextField textFieldWidth;
     @FXML private TextField textFieldHeight;
-    @FXML private TextField textFieldISO;
+    @FXML private TextField textFieldSoftware;
 
 
     @Override
     public void initialize() {
 
-        super.initialize();
         isAddOnlyImages = true;
-
+        super.initialize();
 
         //отслеживание выделенного файла в таблице для показа превью фотографии
         super.getTableView().getSelectionModel().selectedItemProperty().addListener(
@@ -41,17 +39,14 @@ public class ExifRenamerController extends AbstractRenamerController{
         super.getTableView().getSelectionModel().selectedItemProperty().addListener(
                 (((observable, oldValue, newValue) -> showMetadata(newValue)))
         );
-
-
     }
+
 
     @Override
     public void cleanItemList() {
         textFieldDateTimeShooting.clear();
         imageViewArea.setImage(null);
         super.cleanItemList();
-
-
     }
 
     //показ превью фотокарточки)
@@ -80,7 +75,7 @@ public class ExifRenamerController extends AbstractRenamerController{
             textFieldFocalLength.setText(fileItem.getMetadata().getFocalLength());
             textFieldWidth.setText(fileItem.getMetadata().getImageWidth());
             textFieldHeight.setText(fileItem.getMetadata().getImageHeight());
-            textFieldISO.setText(fileItem.getMetadata().getIsoSpeed());
+            textFieldSoftware.setText(fileItem.getMetadata().getSoftware());
         }
 
     }
@@ -135,12 +130,12 @@ public class ExifRenamerController extends AbstractRenamerController{
         textFieldHeight.setText(FieldsValuesStorage.getInstance().setOfValuesValue());
     }
 
-    //кнопка режим вспышки
-    public void applyMaskEXIFIso() {
-        super.getTextFieldFileNameMask().appendText("[EXIF_ISO]");
+    public void applyMaskEXIFSoftware() {
+        super.getTextFieldFileNameMask().appendText("[EXIF_Soft]");
         FieldsValuesStorage.getInstance().setTextFieldFileNameMask(super.getTextFieldFileNameMask());
-        textFieldISO.setText(FieldsValuesStorage.getInstance().setOfValuesValue());
+        textFieldSoftware.setText(FieldsValuesStorage.getInstance().setOfValuesValue());
     }
+
 
 
     //центрование превьюшки в imageView

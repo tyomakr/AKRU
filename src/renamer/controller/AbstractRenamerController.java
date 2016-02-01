@@ -4,6 +4,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import logger.ConsoleAreaAppender;
 import org.apache.log4j.Logger;
 import renamer.MainApp;
@@ -12,6 +16,10 @@ import renamer.controller.process.FileRenamerProcess;
 import renamer.model.FileItem;
 import renamer.storage.FieldsValuesStorage;
 import renamer.storage.FileItemsStorage;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 public abstract class AbstractRenamerController {
@@ -118,6 +126,45 @@ public abstract class AbstractRenamerController {
         comboBoxRegisterChanger.valueProperty().addListener(((observable, oldValue, newValue) -> {
             FieldsValuesStorage.getInstance().setComboBoxRegisterList(comboBoxRegisterList);
             maskController.applyRegister(newValue);}));
+
+
+
+        /** Начало блока Drag & Drop **/
+        getTableView().setOnDragDetected(event -> {
+            Dragboard dragboard = getTableView().startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            if (getTableView().getSelectionModel().getSelectedItem() != null) {
+                content.putString(getTableView().getSelectionModel().getSelectedItem().getFilePath());
+                dragboard.setContent(content);
+            }
+        });
+        getTableView().setOnDragEntered(event -> getTableView().setBlendMode(BlendMode.EXCLUSION));
+        getTableView().setOnDragExited(event -> getTableView().setBlendMode(null));
+        getTableView().setOnDragOver(event -> event.acceptTransferModes(TransferMode.LINK));
+
+        //добавление перетаскиванием
+        getTableView().setOnDragDropped(event -> {
+            //если перетащили как минимум 1 элемент или больше
+            if (event.getDragboard().getFiles().size() >= 1) {
+                //проход по этим элементам
+                for (int i = 0; i < event.getDragboard().getFiles().size(); i++) {
+                    File currentFile = event.getDragboard().getFiles().get(i);
+                    try {
+                        Files.walk(Paths.get(currentFile.getAbsolutePath())).forEach(filePath -> {
+                            if (!Files.isDirectory(filePath)) {
+                                FileItemsStorage.getInstance().additionFiles(filePath.toFile(), isAddOnlyImages);
+                            }
+                        });
+                    } catch (Exception e) {
+                        LOGGER.error("ОШИБКА - " + e.getMessage());
+                    }
+                }
+            }
+            fillTable();
+            event.consume();
+        });
+        /** Конец блока Drag & Drop **/
+
 
         LOGGER.info("Готов к работе");
     }

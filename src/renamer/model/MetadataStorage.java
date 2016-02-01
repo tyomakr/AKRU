@@ -8,9 +8,6 @@ public class MetadataStorage {
 
     private String cameraModel = null;
     private String focalLength = null;
-    private String apertureValue = null;
-    private String shutterSpeed = null;
-    private String isoSpeed = null;
 
     private String imageWidth = null;
     private String imageHeight = null;
@@ -61,30 +58,6 @@ public class MetadataStorage {
 
     public void setFocalLength(String focalLength) {
         this.focalLength = focalLength;
-    }
-
-    public String getApertureValue() {
-        return apertureValue;
-    }
-
-    public void setApertureValue(String apertureValue) {
-        this.apertureValue = apertureValue;
-    }
-
-    public String getShutterSpeed() {
-        return shutterSpeed;
-    }
-
-    public void setShutterSpeed(String shutterSpeed) {
-        this.shutterSpeed = shutterSpeed;
-    }
-
-    public String getIsoSpeed() {
-        return isoSpeed;
-    }
-
-    public void setIsoSpeed(String isoSpeed) {
-        this.isoSpeed = isoSpeed;
     }
 
     public String getImageWidth() {

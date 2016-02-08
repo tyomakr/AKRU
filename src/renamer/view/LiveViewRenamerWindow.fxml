@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="renamer.controller.LiveViewController">
+    <top>
+        <Pane prefHeight="40.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+    <Button alignment="CENTER" onAction="#backToMenu" contentDisplay="CENTER" layoutX="14.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="70.0" text="в Меню" textAlignment="CENTER" />
+    <Label layoutX="97.0" layoutY="9.0" text="Переименование фото">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+</Pane>
+    </top>
+
+</BorderPane>

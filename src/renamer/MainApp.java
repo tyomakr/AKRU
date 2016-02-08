@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import renamer.controller.ExifRenamerController;
+import renamer.controller.LiveViewController;
 import renamer.controller.StandartRenamerController;
 import renamer.controller.StartMenuController;
 import renamer.storage.FieldsValuesStorage;
@@ -91,7 +92,28 @@ public class MainApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+
+    //показ окна переименования по liveView
+    public void showLiveViewRenamer() {
+
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("/renamer/view/LiveViewRenamerWindow.fxml"));
+            BorderPane exifRenamerWindow = loader.load();
+
+            Scene scene = new Scene(exifRenamerWindow);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+            LiveViewController controller = loader.getController();
+            controller.setMainApp(this);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //возврат к главному меню

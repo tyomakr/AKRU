@@ -22,5 +22,11 @@ public class StartMenuController {
         mainApp.showExifRenamer();
     }
 
+    //Вызов окна LiveViewRenamer
+    public void runLiveViewRenamer() {
+        mainApp.getPrimaryStage().close();
+        mainApp.showLiveViewRenamer();
+    }
+
 
 }

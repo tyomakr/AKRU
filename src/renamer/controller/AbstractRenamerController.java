@@ -43,6 +43,7 @@ public abstract class AbstractRenamerController {
     boolean isAddOnlyImages;
 
 
+
     //объявляем поля из FXML
     @FXML private TextArea consoleArea;
     @FXML private TextField textFieldFileNameMask;

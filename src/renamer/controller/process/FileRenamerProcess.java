@@ -111,45 +111,42 @@ public class FileRenamerProcess {
 
 
         LOGGER.info("Проверяем на одинаковые имена");
-        for(int i = 0; i < fileItemsList.size(); i++) {
 
-            String file1 = fileItemsList.get(i).getNewFileName();
-            int count = 0;
+        int counter = 1;    // подготовка счетчика дубликатов имен файлов
 
-            for(int j = 0; j < fileItemsList.size(); j++) {
-                String file2 = fileItemsList.get(j).getNewFileName();
+        for (int index = 1; index <= fileItemsList.size() - 1; index++) {   //проходим список файлов без прохода первого файла
 
-                if(file1.equalsIgnoreCase(file2)) {
-                    count ++;
+            String currentFileItem = fileItemsList.get(index).getNewFileName();         // получаем имя текущего файла
+            String previousFileItem = fileItemsList.get(index - 1).getNewFileName();    // получаем имя предыдущего файла
+
+            if (currentFileItem.equalsIgnoreCase(previousFileItem)) {       //если имена совпадают
+                LOGGER.warn("Дублирование имен файлов при переименовании");
+                counter ++;                                                 //увеличим значение счетчика
+                String fileName;
+
+                if (!currentFileItem.contains(".")) {                       //если у файла нет расширения
+                    fileName = addDoubleCounter(currentFileItem, counter);
                 }
-                //если совпадений более одного
-                if(count > 1) {
-                    String fileName = fileItemsList.get(j).getNewFileName();
-                    LOGGER.warn("Дублирование имен файлов при переименовании");
-
-                    //если у файла нет расширения
-                    if (!fileName.contains(".")) {
-                        fileName = fileName + "____" + count;
-                    }
-
-                    //если расширение присутствует
-                    else {
-                        //отрезаем имя файла
-                        fileName = fileItemsList.get(j).getNewFileName().substring(0, fileItemsList.get(j).getNewFileName().lastIndexOf("."));
-                        //дописываем значение счетчика
-                        fileName = fileName + "____" + count;
-                        //получаем расширение файла
-                        int extPos = fileItemsList.get(j).getNewFileName().lastIndexOf(".") + 1;
-                        String ext = fileItemsList.get(j).getNewFileName().substring(extPos);
-                        //приклеиваем его к измененному имени файла
-                        fileName = fileName + "." + ext;
-                    }
-
-                    fileItemsList.get(j).setNewFileName(fileName);
-                    LOGGER.warn("Фвйл " + fileItemsList.get(j).getNewFileName() + " (Старое имя: " + fileItemsList.get(j).getOldFileName() + ") будет переименован в " + fileName);
+                else {                                                      //если расширение присутствует
+                    fileName = currentFileItem.substring(0, currentFileItem.lastIndexOf("."));   //отрезаем имя файла
+                    fileName = addDoubleCounter(fileName, counter);         //дописываем значение счетчика
+                    int extPosition = currentFileItem.lastIndexOf(".") + 1; //получаем расширение файла
+                    String ext = currentFileItem.substring(extPosition);
+                    fileName = fileName + "." + ext;                        //приклеиваем его к измененному имени файла
                 }
+
+                fileItemsList.get(index).setNewFileName(fileName);          //запись изменений в коллекцию
+                LOGGER.warn("Фвйл " + currentFileItem + " (Старое имя: " + fileItemsList.get(index).getOldFileName() + ") будет переименован в " + fileName);
+            }
+            else {                                                          //если имена не совпадают
+                counter = 1;                                                //обнуляем счетчик
             }
         }
+    }
+
+    //добавление значения счетчика дубликатов к новому имени файла
+    private String addDoubleCounter (String fileName, int counter) {
+        return fileName + "__" + counter;
     }
 
     //выпиливаем с имени файла недопустимые символы (если вдруг где-то их упустили)

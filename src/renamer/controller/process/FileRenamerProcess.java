@@ -6,6 +6,7 @@ import renamer.model.FileItem;
 import renamer.storage.FileItemsStorage;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class FileRenamerProcess {
@@ -114,12 +115,15 @@ public class FileRenamerProcess {
 
         int counter = 1;    // подготовка счетчика дубликатов имен файлов
 
+        List<String> renamedNamesList = new ArrayList<>();                  //Временая коллекция для сравнения
+
         for (int index = 1; index <= fileItemsList.size() - 1; index++) {   //проходим список файлов без прохода первого файла
 
             String currentFileItem = fileItemsList.get(index).getNewFileName();         // получаем имя текущего файла
             String previousFileItem = fileItemsList.get(index - 1).getNewFileName();    // получаем имя предыдущего файла
 
-            if (currentFileItem.equalsIgnoreCase(previousFileItem)) {       //если имена совпадают
+
+            if (isDuplicate(currentFileItem, previousFileItem, renamedNamesList)) {     //если имена совпадают
                 LOGGER.warn("Дублирование имен файлов при переименовании");
                 counter ++;                                                 //увеличим значение счетчика
                 String fileName;
@@ -141,8 +145,26 @@ public class FileRenamerProcess {
             else {                                                          //если имена не совпадают
                 counter = 1;                                                //обнуляем счетчик
             }
+
+            renamedNamesList.add(currentFileItem);                          //добавляем новое имя в список переименованных файлов
         }
     }
+
+    //проверка на совпадения
+    private boolean isDuplicate(String curFile, String prevFile, List<String> renFileList) {
+
+        boolean flag = false;
+        if (curFile.equalsIgnoreCase(prevFile)) {
+            flag = true;
+        }
+        for (String aRenFileList : renFileList) {
+            if (aRenFileList.equalsIgnoreCase(curFile)) {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
 
     //добавление значения счетчика дубликатов к новому имени файла
     private String addDoubleCounter (String fileName, int counter) {

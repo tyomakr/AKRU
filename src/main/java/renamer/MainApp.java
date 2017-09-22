@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import renamer.controller.ExifRenamerController;
-import renamer.controller.LiveViewController;
+
 import renamer.controller.StandartRenamerController;
 import renamer.controller.StartMenuController;
 import renamer.storage.FieldsValuesStorage;
@@ -17,7 +17,6 @@ import java.io.IOException;
 public class MainApp extends Application {
 
     private Stage primaryStage;
-
 
     @Override
     public void start(Stage primaryStage) {
@@ -36,10 +35,12 @@ public class MainApp extends Application {
 
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/renamer/view/StartMenuWindow.fxml"));
+            loader.setLocation(MainApp.class.getResource("/resources/view/StartMenuWindow.fxml"));
             BorderPane startMenuWindow = loader.load();
 
             Scene scene = new Scene(startMenuWindow);
+            scene.getStylesheets().clear();
+            scene.getStylesheets().add(getClass().getResource("/css/startMenu.css").toExternalForm());
 
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -57,7 +58,7 @@ public class MainApp extends Application {
 
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/renamer/view/StandartRenamerWindow.fxml"));
+            loader.setLocation(MainApp.class.getResource("/resources/view/StandartRenamerWindow.fxml"));
             BorderPane standartRenamerWindow = loader.load();
 
             Scene scene = new Scene(standartRenamerWindow);
@@ -78,10 +79,13 @@ public class MainApp extends Application {
 
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/renamer/view/ExifRenamerWindow.fxml"));
+            loader.setLocation(MainApp.class.getResource("/resources/view/ExifRenamerWindow.fxml"));
             BorderPane exifRenamerWindow = loader.load();
 
             Scene scene = new Scene(exifRenamerWindow);
+            scene.getStylesheets().clear();
+            scene.getStylesheets().add(getClass().getResource("/css/exifRenamerWindow.css").toExternalForm());
+
             primaryStage.setScene(scene);
             primaryStage.show();
 
@@ -94,27 +98,6 @@ public class MainApp extends Application {
         }
     }
 
-
-    //показ окна переименования по liveView
-    public void showLiveViewRenamer() {
-
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/renamer/view/LiveViewRenamerWindow.fxml"));
-            BorderPane exifRenamerWindow = loader.load();
-
-            Scene scene = new Scene(exifRenamerWindow);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-
-            LiveViewController controller = loader.getController();
-            controller.setMainApp(this);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     //возврат к главному меню
     public void backToMenu() {

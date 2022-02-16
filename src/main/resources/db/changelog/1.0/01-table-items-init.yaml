@@ -1,0 +1,71 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01-metadata-entity
+      author: tyomakr
+      createTable:
+        tableName: metadata_entity
+        columns:
+          - column:
+              name: metadataid
+              type: BIGINT
+              autoIncrement: true
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: pk_metadataid
+          - column:
+              name: exifdate
+              type: varchar(200)
+          - column:
+              name: exiftime
+              type: varchar(200)
+          - column:
+              name: author
+              type: varchar(200)
+          - column:
+              name: cameramodel
+              type: varchar(200)
+          - column:
+              name: focallength
+              type: varchar(100)
+          - column:
+              name: imagewidth
+              type: varchar(50)
+          - column:
+              name: imageheight
+              type: varchar(50)
+          - column:
+              name: software
+              type: varchar(200)
+
+  - changeSet:
+      id: 02-fileitem-entity
+      author: tyomakr
+      createTable:
+        tableName: file_item_entities
+        columns:
+          - column:
+              name: id
+              type: BIGINT
+              autoIncrement: true
+              constraints:
+                primaryKey: true
+                primaryKeyName: pk_fileitementity
+          - column:
+              name: filepath
+              type: varchar(500)
+          - column:
+              name: oldfilename
+              type: varchar(200)
+          - column:
+              name: newfilename
+              type: varchar(200)
+          - column:
+              name: filesize
+              type: BIGINT
+          - column:
+              name: metadataid
+              type: BIGINT
+              constraints:
+                foreignKeyName: fk_fileitementity
+                references: metadata_entity(metadataid)

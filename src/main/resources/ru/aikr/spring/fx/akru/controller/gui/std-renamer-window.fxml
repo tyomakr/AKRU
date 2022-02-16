@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.aikr.spring.fx.akru.controller.gui.StandartRenamerController">
+    <top>
+        <Pane prefHeight="40.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#backToStartMenu" prefWidth="70.0" text="в Меню" textAlignment="CENTER" />
+            <Label layoutX="97.0" layoutY="9.0" text="Стандартное групповое переименование файлов">
+                <font>
+                    <Font size="18.0" />
+                </font>
+            </Label>
+        </Pane>
+    </top>
+    <bottom>
+        <TextArea fx:id="consoleArea" editable="false" prefHeight="131.0" prefWidth="1090.0" wrapText="true">
+            <BorderPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" />
+            </BorderPane.margin></TextArea>
+    </bottom>
+    <right>
+        <Pane prefHeight="501.0" prefWidth="70.0" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </BorderPane.margin>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="5.0" layoutY="33.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addFolderSubFoldersItems" prefWidth="60.0" text="Dd+" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="6.0" layoutY="287.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cleanItemList" prefWidth="60.0" text="Clean" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="5.0" layoutY="117.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addFileItem" prefWidth="60.0" text="F +" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="5.0" layoutY="148.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#removeFileItem" prefWidth="60.0" text="F -" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="6.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveItemUp" prefWidth="60.0" text="UP" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="6.0" layoutY="232.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#moveItemDown" prefWidth="60.0" text="Down" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="5.0" layoutY="64.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addFolderItems" prefWidth="60.0" text="D +" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Button>
+        </Pane>
+    </right>
+    <center>
+        <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="tableView" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="319.0" prefWidth="1020.0">
+                <columns>
+                    <TableColumn fx:id="columnOldName" editable="false" prefWidth="205.0" text="Старое имя" />
+                    <TableColumn fx:id="columnNewName" editable="false" prefWidth="236.0" text="Новое имя" />
+                    <TableColumn fx:id="columnFileSize" editable="false" prefWidth="94.0" text="Размер" />
+                    <TableColumn fx:id="columnFilePath" editable="false" prefWidth="455.0" text="Расположение" />
+                </columns>
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                </padding>
+            </TableView>
+            <Label layoutX="28.0" layoutY="327.0" text="Маска для имени файла" />
+            <TextField fx:id="textFieldFileNameMask" layoutX="28.0" layoutY="349.0" prefHeight="26.0" prefWidth="178.0" />
+            <Label layoutX="236.0" layoutY="327.0" text="...расширения" />
+            <TextField fx:id="textFieldFileExtMask" layoutX="236.0" layoutY="349.0" prefHeight="26.0" prefWidth="98.0" />
+            <Button layoutX="28.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileName" prefHeight="26.0" prefWidth="75.0" text="[N] - имя" />
+            <Button layoutX="28.0" layoutY="432.0" mnemonicParsing="false" onAction="#applyMaskFileNameDate" prefWidth="95.0" text="Дата (YMD)" />
+            <Button layoutX="28.0" layoutY="465.0" mnemonicParsing="false" onAction="#applyMaskFileNameTime" prefWidth="95.0" text="Время (hms)" />
+            <Separator layoutX="218.0" layoutY="383.0" orientation="VERTICAL" prefHeight="120.0" />
+            <Separator layoutX="349.0" layoutY="334.0" orientation="VERTICAL" prefHeight="170.0" />
+            <Spinner fx:id="spinnerCounterStartTo" editable="true" layoutX="456.0" layoutY="349.0" prefHeight="26.0" prefWidth="90.0" />
+            <Spinner fx:id="spinnerCounterStep" editable="true" layoutX="456.0" layoutY="384.0" prefHeight="26.0" prefWidth="90.0" />
+            <Spinner fx:id="spinnerCounterDigits" editable="true" layoutX="456.0" layoutY="417.0" prefWidth="90.0" />
+            <Label layoutX="376.0" layoutY="354.0" text="Начинать с" />
+            <Label layoutX="376.0" layoutY="389.0" text="Шаг" />
+            <Label layoutX="376.0" layoutY="422.0" text="Цифр" />
+            <Label layoutX="378.0" layoutY="327.0" text="Параметры счетчика" />
+            <Button layoutX="116.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileNameCounter" prefHeight="26.0" prefWidth="90.0" text="[C] - счетчик" />
+            <Button layoutX="237.0" layoutY="417.0" mnemonicParsing="false" onAction="#applyMaskFileExtCounter" prefWidth="96.0" text="[C] - счетчик" />
+            <Button layoutX="237.0" layoutY="384.0" mnemonicParsing="false" onAction="#applyMaskFileExtType" prefWidth="96.0" text="[T] - тип" />
+            <Label layoutX="618.0" layoutY="327.0" text="Изменение регистра" />
+            <ComboBox fx:id="comboBoxRegisterChanger" layoutX="618.0" layoutY="349.0" prefHeight="26.0" prefWidth="200.0" />
+            <Button alignment="CENTER" layoutX="900.0" layoutY="349.0" mnemonicParsing="false" onAction="#runFileRenamerProcess" prefHeight="120.0" prefWidth="120.0" text="ВЫПОЛНИТЬ" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font></Button>
+            <Separator layoutX="579.0" layoutY="333.0" orientation="VERTICAL" prefHeight="170.0" />
+            <BorderPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </BorderPane.margin>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+        </Pane>
+    </center>
+</BorderPane>

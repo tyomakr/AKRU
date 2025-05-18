@@ -1,0 +1,11 @@
+{
+  "files": [
+    "src/test/resources/sample/photo1.jpeg",
+    "src/test/resources/sample/photo2.png"
+  ],
+  "template": "{date}_{orig}",
+  "options": {
+    "handleDuplicates": "suffix",
+    "tz": "Europe/Amsterdam"
+  }
+}
